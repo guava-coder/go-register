@@ -1,14 +1,13 @@
 package user
 
 import (
-	"encoding/json"
-	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	. "goregister.com/app/data"
+	. "goregister.com/app/request"
 )
 
 type UserService struct {
@@ -21,31 +20,12 @@ func NewUserService(repo UserRepository) UserService {
 	}
 }
 
-func readAndHandleRequestBody(ctx *gin.Context, operation func(User)) {
-	handleBody := func(body []byte, operation func(User), ctx *gin.Context) {
-		var us User
-		err := json.Unmarshal(body, &us)
-		if err == nil {
-			operation(us)
-		} else {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "Not a user Error:" + err.Error(),
-			})
-		}
-	}
-
-	body, err := io.ReadAll(ctx.Request.Body)
-	if err == nil {
-		handleBody(body, operation, ctx)
-	} else {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"Response": "Reading request body failed. ERROR: " + err.Error(),
-		})
-	}
+func (serv UserService) readAndHandleRequestBody(ctx *gin.Context, op func(User)) {
+	ReadAndHandleRequestBody[User](ctx, op)
 }
 
 func (serv UserService) QueryById(ctx *gin.Context) {
-	readAndHandleRequestBody(ctx, func(usr User) {
+	serv.readAndHandleRequestBody(ctx, func(usr User) {
 		res := serv.repo.QueryById(usr.Id)
 		if res.Id == "" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -101,5 +81,5 @@ func (serv UserService) AddUser(ctx *gin.Context) {
 		}
 	}
 
-	readAndHandleRequestBody(ctx, hashUserPasswordAndInsert)
+	serv.readAndHandleRequestBody(ctx, hashUserPasswordAndInsert)
 }
