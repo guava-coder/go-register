@@ -20,6 +20,7 @@ func NewUserController(service UserService, router *gin.Engine) UserController {
 func (ctr UserController) Run() {
 	ctr.AddUser()
 	ctr.QueryById()
+	ctr.UpdateUserAuth()
 }
 
 func (ctr UserController) AddUser() {
@@ -28,4 +29,8 @@ func (ctr UserController) AddUser() {
 
 func (ctr UserController) QueryById() {
 	ctr.group.POST("/query", ctr.service.QueryById)
+}
+
+func (ctr UserController) UpdateUserAuth() {
+	ctr.group.POST("/auth", ctr.service.UpdateUserAuth)
 }

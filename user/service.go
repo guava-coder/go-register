@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
+	. "goregister.com/app/auth"
 	. "goregister.com/app/data"
 	. "goregister.com/app/request"
 )
@@ -82,4 +83,34 @@ func (serv UserService) AddUser(ctx *gin.Context) {
 	}
 
 	serv.readAndHandleRequestBody(ctx, hashUserPasswordAndInsert)
+}
+
+func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
+	handleUpdate := func(usr User) {
+		check := serv.repo.QueryById(usr.Id)
+		if check.Id == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": "User ID incorrect",
+			})
+		} else {
+			var auth UserAuth
+			usrWithAuth := User{
+				Id:   usr.Id,
+				Auth: string(auth.MustGetHashAuth()),
+			}
+			res := serv.repo.UpdateUserAuth(usrWithAuth)
+			if res.Auth == "" {
+				ctx.JSON(http.StatusInternalServerError, gin.H{
+					"Response": "System failed to generate auth, please try again later",
+				})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{
+					"Response": "User Auth update successful",
+				})
+
+			}
+		}
+
+	}
+	serv.readAndHandleRequestBody(ctx, handleUpdate)
 }

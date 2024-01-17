@@ -3,6 +3,7 @@ package user
 import (
 	"testing"
 
+	. "goregister.com/app/auth"
 	. "goregister.com/app/data"
 	. "goregister.com/app/db"
 )
@@ -73,6 +74,22 @@ func TestDeleteUser(t *testing.T) {
 			t.Log("Delete successful")
 		} else {
 			t.Fatal()
+		}
+	})
+}
+
+func TestUpdateUserAuth(t *testing.T) {
+	runRepoOperation(func(ur UserRepository) {
+		var auth UserAuth
+		user := User{
+			Id:   "a01",
+			Auth: string(auth.MustGetHashAuth()),
+		}
+		res := ur.UpdateUserAuth(user)
+		if res.Auth == "" {
+			t.Fatal()
+		} else {
+			t.Log(res)
 		}
 	})
 }

@@ -1,6 +1,8 @@
 package user
 
-import . "goregister.com/app/data"
+import (
+	. "goregister.com/app/data"
+)
 
 type UserRepository struct {
 	DB map[string]User
@@ -51,4 +53,11 @@ func (repo UserRepository) UpdateUserInfo(user User) User {
 func (repo UserRepository) DeleteUser(id string) map[string]User {
 	delete(repo.DB, id)
 	return repo.DB
+}
+
+func (repo UserRepository) UpdateUserAuth(user User) User {
+	temp := repo.DB[user.Id]
+	temp.Auth = user.Auth
+	repo.DB[user.Id] = temp
+	return repo.DB[user.Id]
 }
