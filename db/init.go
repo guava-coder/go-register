@@ -1,6 +1,11 @@
 package db
 
-import . "goregister.com/app/data"
+import (
+	"log"
+
+	"golang.org/x/crypto/bcrypt"
+	. "goregister.com/app/data"
+)
 
 func DBInit() map[string]User {
 	usrs := []User{
@@ -38,6 +43,11 @@ func DBInit() map[string]User {
 
 	db := make(map[string]User)
 	for _, v := range usrs {
+		psw, err := bcrypt.GenerateFromPassword([]byte(v.Password), 0)
+		if err != nil {
+			log.Println(v.Id + " password hash failed.")
+		}
+		v.Password = string(psw)
 		db[v.Id] = v
 	}
 	return db

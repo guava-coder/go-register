@@ -13,7 +13,7 @@ type UserController struct {
 func NewUserController(service UserService, router *gin.Engine) UserController {
 	return UserController{
 		service: service,
-		group:   router.Group("api/v1/user"),
+		group:   router.Group("api/v1/user/"),
 	}
 }
 
@@ -24,13 +24,13 @@ func (ctr UserController) Run() {
 }
 
 func (ctr UserController) AddUser() {
-	ctr.group.POST("/add", ctr.service.AddUser)
+	ctr.group.POST("add/", ctr.service.AddUser)
 }
 
 func (ctr UserController) QueryById() {
-	ctr.group.POST("/query", ctr.service.QueryById)
+	ctr.group.POST("query/", ctr.service.QueryById)
 }
 
 func (ctr UserController) UpdateUserAuth() {
-	ctr.group.POST("/auth", ctr.service.UpdateUserAuth)
+	ctr.group.POST("auth/", ctr.service.UpdateUserAuth)
 }

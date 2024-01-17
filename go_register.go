@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	. "goregister.com/app/controller"
 	. "goregister.com/app/db"
+	jwt "goregister.com/app/jwt"
 	user "goregister.com/app/user"
 )
 
@@ -19,6 +20,7 @@ func (app GoRegister) Init() {
 	initRepos()
 
 	NewUserController(user.NewUserService(userRepo), router).Run()
+	NewJwtController(jwt.NewJwtService(userRepo), router).Run()
 
 	router.StaticFS("./static", http.Dir("static/"))
 	index(router)
