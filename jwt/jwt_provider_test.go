@@ -7,8 +7,9 @@ import (
 )
 
 var (
+	provider  JwtProvider
 	KEY       = "aaa"
-	JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MDUzOTQ4NjgsImlkIjoiMTIzIn0.Dexfssj9DMOeMF2tUwTkU0H2NGDuELNkSRHXE7iHX6c"
+	JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE3MDU0NzQ2OTQsImlkIjoiMTIzIn0.9ft0sQZoZFxcW4i0wE8oUbS5fzy215uyyXOBDPJno3g"
 )
 
 func TestMustGetGetJWT(t *testing.T) {
@@ -16,7 +17,7 @@ func TestMustGetGetJWT(t *testing.T) {
 		Id: "123",
 	}
 
-	token, err := GetJWT([]byte(KEY), user.Id)
+	token, err := provider.GetJWT([]byte(KEY), user.Id)
 	if err == nil {
 		t.Log(token)
 	} else {
@@ -25,8 +26,8 @@ func TestMustGetGetJWT(t *testing.T) {
 }
 
 func TestVerifyJWTToken(t *testing.T) {
-	res := MustVerifyJWT([]byte(KEY), JWT_TOKEN)
-	if res == false {
+	res := provider.MustIsJWTVerified([]byte(KEY), JWT_TOKEN)
+	if !res {
 		t.Fatal()
 	}
 }
@@ -41,7 +42,7 @@ func TestParseJWT(t *testing.T) {
 }
 
 func TestMustGetJWTClaims(t *testing.T) {
-	claims := MustGetJWTClaims([]byte(KEY), JWT_TOKEN)
+	claims := provider.MustGetJWTClaims([]byte(KEY), JWT_TOKEN)
 	if claims == nil {
 		t.Fatal()
 	} else {

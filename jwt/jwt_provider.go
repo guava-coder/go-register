@@ -7,7 +7,9 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func GetJWT(key []byte, id string) (string, error) {
+type JwtProvider struct{}
+
+func (pro JwtProvider) GetJWT(key []byte, id string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
@@ -31,7 +33,7 @@ func parseJWT(key []byte, token string) (*jwt.Token, error) {
 	return t, err
 }
 
-func MustVerifyJWT(key []byte, token string) bool {
+func (pro JwtProvider) MustIsJWTVerified(key []byte, token string) bool {
 	t, err := parseJWT(key, token)
 	if err != nil {
 		log.Println(err)
@@ -45,7 +47,7 @@ func MustVerifyJWT(key []byte, token string) bool {
 	}
 }
 
-func MustGetJWTClaims(key []byte, token string) jwt.MapClaims {
+func (pro JwtProvider) MustGetJWTClaims(key []byte, token string) jwt.MapClaims {
 	res, err := parseJWT([]byte(key), token)
 
 	if err == nil {

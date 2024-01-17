@@ -19,8 +19,13 @@ func NewJwtController(service JwtService, router *gin.Engine) JwtController {
 
 func (ctr JwtController) Run() {
 	ctr.Login()
+	ctr.VerifyBearerToken()
 }
 
 func (ctr JwtController) Login() {
 	ctr.group.POST("login/", ctr.service.Login)
+}
+
+func (ctr JwtController) VerifyBearerToken() {
+	ctr.group.POST("verify/", ctr.service.VerifyBearerToken)
 }

@@ -27,7 +27,8 @@ func (serv JwtService) readAndHandleRequestBody(ctx *gin.Context, op func(User))
 
 func (serv JwtService) Login(ctx *gin.Context) {
 	getJWT := func(key []byte, user User) {
-		token, err := GetJWT(key, user.Id)
+		var provider JwtProvider
+		token, err := provider.GetJWT(key, user.Id)
 		if err == nil {
 			ctx.JSON(http.StatusOK, gin.H{"Token": token})
 		} else {
@@ -66,4 +67,15 @@ func (serv JwtService) Login(ctx *gin.Context) {
 		}
 	}
 	serv.readAndHandleRequestBody(ctx, getToken)
+}
+
+func (serv JwtService) VerifyBearerToken(ctx *gin.Context) {
+	var verf BearerVerfier
+	verf.VerifyBearerToken(ctx,
+		func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, gin.H{
+				"Response": "Authorized",
+			})
+		},
+	)
 }
