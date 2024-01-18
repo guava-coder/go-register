@@ -5,29 +5,30 @@ function CookieGeneratorTest () {
   const id = 'test'
   const cookieGen = CookieGenerator(id)
   return {
-    TestSet: (name = '') => {
+    testSet: (name = '') => {
       const u = UnitTest(name)
       cookieGen.set('CookieGenerator unit test')
       u.assertNotTrue(cookieGen.get() === undefined)
     },
-    TestGet: (name = '') => {
+    testGet: (name = '') => {
       const u = UnitTest(name)
       u.assertNotTrue(cookieGen.get() === undefined)
       console.log(cookieGen.get())
     },
-    TestGetAll: (name = '') => {
+    testGetAll: (name = '') => {
       const u = UnitTest(name)
       u.assertNotTrue(cookieGen.getAll() === undefined)
       console.log(cookieGen.getAll())
     },
-    TestDelete: (name = '') => {
+    testDelete: (name = '') => {
       const u = UnitTest(name)
       cookieGen.delete()
       u.assertTrue(cookieGen.get() === undefined)
     }
   }
 }
-CookieGeneratorTest().TestSet('TestSet')
-CookieGeneratorTest().TestGet('TestGet')
-CookieGeneratorTest().TestGetAll('TestGetAll')
-CookieGeneratorTest().TestDelete('TestDelete')
+
+CookieGeneratorTest().testSet('TestSet')
+CookieGeneratorTest().testGet('TestGet')
+CookieGeneratorTest().testGetAll('TestGetAll')
+CookieGeneratorTest().testDelete('TestDelete')
