@@ -1,16 +1,16 @@
-<form>
+<form id="loginForm">
     <div class="text-center">
         <div class="p-4 g-col-6"></div>
         <h3>Login</h3>
         <div class="p-4 g-col-6"></div>
     </div>
     <div class="form-floating mb-4">
-        <input type="email" id="email" class="form-control" />
+        <input type="text" id="email" name="Email" class="form-control" />
         <label class="form-label" for="email">Email address</label>
     </div>
 
     <div class="form-floating mb-4">
-        <input type="password" id="password" class="form-control" />
+        <input type="password" id="password" name="Password" class="form-control" />
         <label class="form-label" for="password">Password</label>
     </div>
 
@@ -21,6 +21,6 @@
     </div>
 
     <div class="text-center">
-        <button type="button" class="btn btn-primary btn-block mb-4" id="submit">Sign in</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
     </div>
 </form>
