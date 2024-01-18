@@ -1,6 +1,7 @@
 package jwt
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -42,6 +43,33 @@ func (verf BearerVerfier) VerifyBearerToken(ctx *gin.Context, authOp func(ctx *g
 	bearers := ctx.Request.Header["Authorization"]
 	if len(bearers) > 0 {
 		handleBearerToken(bearers[0], ctx, authOp)
+	} else {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"Response": "No Authrization",
+		})
+	}
+}
+
+func handleUserIdFromJWT(bearer string, ctx *gin.Context, authOp func(ctx *gin.Context, id string)) {
+	var ua UserAuth
+	token := strings.ReplaceAll(bearer, "Bearer ", "")
+	var provider JwtProvider
+	claims := provider.MustGetJWTClaims(ua.MustGetOriginAuth(), token)
+
+	if claims == nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"Response": "JWT verify failed",
+		})
+	} else {
+		id := fmt.Sprint(claims["id"])
+		authOp(ctx, id)
+	}
+}
+
+func (verf BearerVerfier) ExtractUserIdFromBearer(ctx *gin.Context, authOp func(ctx *gin.Context, id string)) {
+	bearers := ctx.Request.Header["Authorization"]
+	if len(bearers) > 0 {
+		handleUserIdFromJWT(bearers[0], ctx, authOp)
 	} else {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"Response": "No Authrization",

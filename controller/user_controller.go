@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	. "goregister.com/app/jwt"
 	. "goregister.com/app/user"
 )
 
@@ -28,7 +29,10 @@ func (ctr UserController) AddUser() {
 }
 
 func (ctr UserController) QueryById() {
-	ctr.group.POST("query/", ctr.service.QueryById)
+	ctr.group.POST("query/", func(ctx *gin.Context) {
+		var verf BearerVerfier
+		verf.ExtractUserIdFromBearer(ctx, ctr.service.QueryById)
+	})
 }
 
 func (ctr UserController) UpdateUserAuth() {

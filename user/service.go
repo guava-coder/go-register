@@ -25,20 +25,18 @@ func (serv UserService) readAndHandleRequestBody(ctx *gin.Context, op func(User)
 	ReadAndHandleRequestBody[User](ctx, op)
 }
 
-func (serv UserService) QueryById(ctx *gin.Context) {
-	serv.readAndHandleRequestBody(ctx, func(usr User) {
-		res := serv.repo.QueryById(usr.Id)
-		if res.Id == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "User not found",
-			})
-		} else {
-			ctx.JSON(http.StatusOK, gin.H{
-				"Response": "Find User",
-				"User":     res,
-			})
-		}
-	})
+func (serv UserService) QueryById(ctx *gin.Context, id string) {
+	res := serv.repo.QueryById(id)
+	if res.Id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"Response": "User not found",
+		})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"Response": "Find User",
+			"User":     res,
+		})
+	}
 }
 
 func (serv UserService) AddUser(ctx *gin.Context) {
