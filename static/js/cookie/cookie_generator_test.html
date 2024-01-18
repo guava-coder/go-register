@@ -1,0 +1,36 @@
+<script src="/static/js/cookie/js.cookie.min.js"></script>
+<script type="module">
+    import CookieGenerator from '/static/js/cookie/cookie_generator.js'
+    import UnitTest from '/static/js/util/unit_test.js'
+
+    function Test() {
+        const id = 'test'
+        const cookieGen = CookieGenerator(id)
+        return {
+            TestSet: (name = '') => {
+                const u = UnitTest(name)
+                cookieGen.set('CookieGenerator unit test')
+                u.assertNotTrue(cookieGen.get() === undefined)
+            },
+            TestGet: (name = '') => {
+                const u = UnitTest(name)
+                u.assertNotTrue(cookieGen.get() === undefined)
+                console.log(cookieGen.get())
+            },
+            TestGetAll: (name = '') => {
+                const u = UnitTest(name)
+                u.assertNotTrue(cookieGen.getAll() === undefined)
+                console.log(cookieGen.getAll())
+            },
+            TestDelete: (name = '') => {
+                const u = UnitTest(name)
+                cookieGen.delete()
+                u.assertTrue(cookieGen.get() === undefined)
+            }
+        }
+    }
+    Test().TestSet('TestSet')
+    Test().TestGet('TestGet')
+    Test().TestGetAll('TestGetAll')
+    Test().TestDelete('TestDelete')
+</script>
