@@ -16,7 +16,7 @@ export default function JwtController () {
           'Content-Type': 'application/json'
         })
       }).then(res => ResponseHandler().run(res, statusHandler))
-        .then(data => UserToken().set(JSON.stringify(data.Token)))
+        .then(data => UserToken().set(data.Token))
         .catch(err => console.log(err))
     }
   }
