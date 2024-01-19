@@ -4,8 +4,7 @@ import UserController from './user_controller.js'
 function UserControllerTest () {
   const controller = UserController()
   return {
-    testFindUserData: (name = '') => {
-      const u = UnitTest(name)
+    testFindUserData: (u = UnitTest()) => {
       controller.findUserData()
         .then(data => {
           u.assertNotTrue(data === undefined)
@@ -15,4 +14,4 @@ function UserControllerTest () {
   }
 }
 
-UserControllerTest().testFindUserData('testFindUserData')
+UserControllerTest().testFindUserData(UnitTest('testFindUserData'))

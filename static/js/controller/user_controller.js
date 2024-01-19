@@ -5,16 +5,15 @@ import ResponseHandler from '../request/response_handler.js'
 export default function UserController () {
   const serv = UserService()
 
-  const jwtHeaderHandler = (success) => {
+  const jwtHeaderHandler = () => {
     const statusHandler = HttpStatusHandler()
-    statusHandler.OK = () => success()
     statusHandler.BadRequest = () => console.log('not jwt')
     statusHandler.Unauthorized = () => console.log('jwt verify failed')
     return statusHandler
   }
 
   return {
-    findUserData: (success = () => {}) => serv.postAjax({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler(success) })
+    findUserData: () => serv.postAjax({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler() })
   }
 }
 
@@ -28,7 +27,6 @@ function UserService () {
   }
 
   const ajax = async (met, arg = RequestArgs()) => {
-    console.log(AuthHeaders().get())
     return fetch(arg.url, {
       method: met,
       body: arg.bodyStr,
