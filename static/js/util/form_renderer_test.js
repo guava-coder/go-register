@@ -2,16 +2,20 @@ import FormRenderer from './form_renderer.js'
 import UnitTest from './unit_test.js'
 
 function FormRendererTest () {
-  const renderer = FormRenderer('#testForm')
+  const renderer = FormRenderer()
+  const form = document.querySelector('#testForm')
   return {
-    testRender: (u = UnitTest()) => {
+    testGetForm: (u = UnitTest()) => {
       const name = 'name'
       const email = 'email'
-      renderer.render({ Name: name, Email: email })
-      u.assertNotTrue(document.querySelector('#Name') === null)
-      u.assertNotTrue(document.querySelector('#Email') === null)
+      form.innerHTML += renderer.getForm({ Name: name, Email: email })
+      form.innerHTML += /* html */`
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-block mb-4" id="submit">submit</button>
+    </div>`
+      u.assertNotTrue(document.querySelector('#Name') === null && document.querySelector('#Email') === null)
     }
   }
 }
 
-FormRendererTest().testRender(UnitTest('testRender'))
+FormRendererTest().testGetForm(UnitTest('testRender'))

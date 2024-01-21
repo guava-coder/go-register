@@ -8,7 +8,7 @@
 function FloatingFormHTML (name = '', id = '') {
   return /* html */`
         <div class="form-floating mb-3" id="form${id}">
-            <input type="text" class="form-control" name="${id}" id="${id}" disabled>
+            <input type="text" class="form-control" name="${id}" id="${id}">
             <label for="${id}">${name}</label>
         </div>
     `
@@ -19,25 +19,19 @@ function FloatingFormHTML (name = '', id = '') {
  *
  * @param {string} [selector=""] selector of detail list
  * @return {{
- * render:(object)=>{}
+ * getForm:(object)=>{return string}
  * }}
  */
-export default function FormRenderer (selector = '') {
-  const render = (details) => {
-    const items = () => {
+export default function FormRenderer () {
+  return {
+    getForm: (details = {}) => {
       let temp = ''
       const keys = Object.keys(details)
       for (const i in keys) {
         const k = keys[i]
         temp += FloatingFormHTML(details[k], k)
       }
-
       return temp
     }
-    const detailDisplay = document.querySelector(selector)
-    detailDisplay.innerHTML = items()
-  }
-  return {
-    render: (details = {}) => render(details)
   }
 }

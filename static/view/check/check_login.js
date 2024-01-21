@@ -3,23 +3,24 @@ import UserController from '../../js/controller/user_controller.js'
 CheckLogin()
 
 function CheckLogin () {
-  const content = document.querySelector('#content')
+  const fetchHTMLPage = (url = '', handleData = () => {}) => {
+    const content = document.querySelector('#content')
+    fetch(url)
+      .then(res => { return res.text() })
+      .then(data => {
+        content.innerHTML = data
+        htmx.process(content)
+        handleData()
+      })
+  }
+
   UserController().findUserData().then(user => {
     if (user === undefined) {
-      fetch('/static/view/check/default_page.html')
-        .then(res => { return res.text() })
-        .then(data => {
-          content.innerHTML = data
-          htmx.process(content)
-        })
+      fetchHTMLPage('/static/view/check/default_page.html')
     } else {
-      fetch('/static/view/check/login_success.html')
-        .then(res => { return res.text() })
-        .then(data => {
-          content.innerHTML = data
-          htmx.process(content)
-          document.querySelector('#welcome').innerHTML = `<h2>Welcome ${user.User.Name}!</h2>`
-        })
+      fetchHTMLPage('/static/view/check/login_success.html', () => {
+        document.querySelector('#welcome').innerHTML = `<h2>Welcome ${user.User.Name}!</h2>`
+      })
     }
   })
 }
