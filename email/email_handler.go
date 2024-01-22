@@ -1,6 +1,8 @@
 package email
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +22,12 @@ func (handler EmailHandler) VerifyUserEmail(ctx *gin.Context, authOp func(*gin.C
 		res := sender.VerifyEmail(u.Email)
 
 		if res != nil && res.Syntax.Valid {
+			data, err := json.Marshal(res)
+			if err == nil {
+				log.Println(string(data))
+			} else {
+				log.Println(err)
+			}
 			authOp(ctx, u)
 		} else {
 			ctx.JSON(http.StatusUnauthorized, gin.H{
