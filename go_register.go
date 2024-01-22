@@ -7,11 +7,18 @@ import (
 	"github.com/gin-gonic/gin"
 	. "goregister.com/app/controller"
 	. "goregister.com/app/db"
+	email "goregister.com/app/email"
 	jwt "goregister.com/app/jwt"
 	user "goregister.com/app/user"
 )
 
 type GoRegister struct{}
+
+func initControllers(router *gin.Engine) {
+	NewUserController(user.NewUserService(userRepo), router).Run()
+	NewJwtController(jwt.NewJwtService(userRepo), router).Run()
+	NewEmailController(email.NewEmailService(userRepo), router).Run()
+}
 
 func (app GoRegister) Init() {
 	router := gin.New()
@@ -19,8 +26,7 @@ func (app GoRegister) Init() {
 	router.SetTrustedProxies([]string{"127.0.0.1"})
 	initRepos()
 
-	NewUserController(user.NewUserService(userRepo), router).Run()
-	NewJwtController(jwt.NewJwtService(userRepo), router).Run()
+	initControllers(router)
 
 	router.StaticFS("./static", http.Dir("static/"))
 	index(router)
