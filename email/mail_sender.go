@@ -12,6 +12,7 @@ import (
 type EmailProvider struct {
 	Sender string
 	Token  string
+	Host   string
 }
 
 //go:embed provider.json
@@ -49,7 +50,7 @@ func (sender MailSender) SendMail(em Email) error {
 
 	m.SetBody("text/html", em.HTMLBody)
 
-	d := mail.NewDialer("smtp.gmail.com", 587, provider.Sender, provider.Token)
+	d := mail.NewDialer(provider.Host, 587, provider.Sender, provider.Token)
 
 	err := d.DialAndSend(m)
 	return err

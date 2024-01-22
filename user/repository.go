@@ -25,7 +25,7 @@ func (repo UserRepository) QueryByInfo(user User) User {
 	}
 	var target User
 	for _, v := range users {
-		if v.Name == user.Name || v.Email == user.Email || v.Phone == user.Phone {
+		if v.Name == user.Name || v.Email == user.Email {
 			target = v
 			break
 		}
@@ -41,9 +41,7 @@ func (repo UserRepository) AddUser(user User) User {
 func (repo UserRepository) UpdateUserInfo(user User) User {
 	temp := repo.DB[user.Id]
 	temp.Name = user.Name
-	temp.Phone = user.Phone
-	temp.BirthDay = user.BirthDay
-	temp.Gender = user.Gender
+	temp.Bio = user.Bio
 
 	repo.DB[user.Id] = temp
 

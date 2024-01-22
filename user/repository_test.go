@@ -31,9 +31,7 @@ func TestAddUser(t *testing.T) {
 			Id:       "a99",
 			Name:     "Dora",
 			Email:    "dora@mail.com",
-			Phone:    "0123499568",
-			BirthDay: "1999-11-27",
-			Gender:   "Female",
+			Bio:      "Test User",
 			Password: "1234",
 			Auth:     "none",
 		}
@@ -51,8 +49,7 @@ func TestUpdateUserInfo(t *testing.T) {
 	runRepoOperation(func(ur UserRepository) {
 		old := ur.QueryById("a01")
 		user := old
-		user.Phone = "0001221321"
-		user.BirthDay = "1999-11-11"
+		user.Bio = "Fake User"
 		user.Auth = "6666"
 		res := ur.UpdateUserInfo(user)
 
