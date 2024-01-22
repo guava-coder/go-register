@@ -2,3 +2,5 @@ node_modules/
 package.json
 package-lock.json
 .eslintrc.js
+provider.json
+auth.txt

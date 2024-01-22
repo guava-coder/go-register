@@ -9,21 +9,27 @@ import HttpStatusHandler from './http_status_handler.js'
 export default function ResponseHandler () {
   const handleResponse = (res = Promise(), statusHandler = HttpStatusHandler()) => {
     const d = res.json()
-    if (res.status === 200) {
-      statusHandler.OK()
-      return d
-    } else if (res.status === 400) {
-      statusHandler.BadRequest()
-      return d.then(Promise.reject.bind(Promise))
-    } else if (res.status === 401) {
-      statusHandler.Unauthorized()
-      return d.then(Promise.reject.bind(Promise))
-    } else if (res.status === 404) {
-      alert('找不到資料')
-      return d.then(Promise.reject.bind(Promise))
-    } else {
-      alert('系統錯誤，請重新操作')
-      return d.then(Promise.reject.bind(Promise))
+    const rejectPromise = () => { return Promise.reject.bind(Promise) }
+
+    switch (res.status) {
+      case 200 :
+        statusHandler.OK()
+        return d
+      case 400:
+        statusHandler.BadRequest()
+        return d.then(rejectPromise())
+      case 401:
+        statusHandler.Unauthorized()
+        return d.then(rejectPromise())
+      case 404:
+        alert('Cannot find resources')
+        return d.then(rejectPromise())
+      case 500:
+        alert('System error, please try again later.')
+        return d.then(rejectPromise())
+      default:
+        alert('Unhandle error.')
+        return d.then(rejectPromise())
     }
   }
 
