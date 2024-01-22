@@ -1,6 +1,6 @@
+import Ajaj from '../request/ajaj.js'
 import AuthHeaders from '../request/auth_headers.js'
 import HttpStatusHandler from '../request/http_status_handler.js'
-import ResponseHandler from '../request/response_handler.js'
 
 export default function UserController () {
   const serv = UserService()
@@ -13,31 +13,14 @@ export default function UserController () {
   }
 
   return {
-    findUserData: () => serv.postAjax({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler() })
+    findUserData: () => serv.post({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler() })
   }
 }
 
 function UserService () {
-  const RequestArgs = () => {
-    return {
-      url: '',
-      bodyStr: '',
-      statusHandler: RequestArgs()
-    }
-  }
-
-  const ajax = async (met, arg = RequestArgs()) => {
-    return fetch(arg.url, {
-      method: met,
-      body: arg.bodyStr,
-      headers: AuthHeaders().get()
-    }).then(res => ResponseHandler().run(res, arg.statusHandler))
-      .catch(err => console.log(err))
-  }
-
+  const ajaj = Ajaj()
+  const h = AuthHeaders().get()
   return {
-    deleteAjax: (args = RequestArgs()) => { return ajax('DELETE', args) },
-    putAjax: (args = RequestArgs()) => { return ajax('PUT', args) },
-    postAjax: (args = RequestArgs()) => { return ajax('POST', args) }
+    post: (args = { }) => { args.headers = h; return ajaj.post(args) }
   }
 }
