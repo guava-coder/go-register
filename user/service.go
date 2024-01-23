@@ -84,29 +84,31 @@ func (serv UserService) AddUser(ctx *gin.Context) {
 }
 
 func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
+	changeUserAuthToReal := func(id string) {
+		var auth UserAuth
+		usrWithAuth := User{
+			Id:   id,
+			Auth: string(auth.MustGetHashAuth()),
+		}
+		res := serv.repo.UpdateUserAuth(usrWithAuth)
+		if res.Auth == "" {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"Response": "System failed to generate auth, please try again later",
+			})
+		} else {
+			ctx.JSON(http.StatusOK, gin.H{
+				"Response": "User Auth update successful",
+			})
+		}
+	}
+
 	handleUpdate := func(usr User) {
-		check := serv.repo.QueryById(usr.Id)
-		if check.Id == "" {
+		if serv.repo.CheckAuth(usr) {
+			changeUserAuthToReal(usr.Id)
+		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"Response": "User ID incorrect",
 			})
-		} else {
-			var auth UserAuth
-			usrWithAuth := User{
-				Id:   usr.Id,
-				Auth: string(auth.MustGetHashAuth()),
-			}
-			res := serv.repo.UpdateUserAuth(usrWithAuth)
-			if res.Auth == "" {
-				ctx.JSON(http.StatusInternalServerError, gin.H{
-					"Response": "System failed to generate auth, please try again later",
-				})
-			} else {
-				ctx.JSON(http.StatusOK, gin.H{
-					"Response": "User Auth update successful",
-				})
-
-			}
 		}
 
 	}

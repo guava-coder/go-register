@@ -90,3 +90,25 @@ func TestUpdateUserAuth(t *testing.T) {
 		}
 	})
 }
+
+func TestCheckAuth(t *testing.T) {
+	runRepoOperation(func(ur UserRepository) {
+		fakeAuth := "ggg"
+		user := User{
+			Id:   "a02",
+			Auth: fakeAuth,
+		}
+		res := ur.UpdateUserAuth(user)
+		if res.Name == "" {
+			t.Fatal("user not exist")
+		}
+		if ur.CheckAuth(User{
+			Id:   "a02",
+			Auth: "ggg",
+		}) {
+			t.Log(res)
+		} else {
+			t.Fatal("Auth incorrect")
+		}
+	})
+}

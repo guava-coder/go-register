@@ -19,8 +19,9 @@ func NewUserController(service UserService, router *gin.Engine) UserController {
 }
 
 func (ctr UserController) Run() {
-	ctr.AddUser()
 	ctr.QueryById()
+
+	ctr.AddUser()
 	ctr.UpdateUserAuth()
 }
 

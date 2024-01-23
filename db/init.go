@@ -25,14 +25,6 @@ func DBInit() map[string]User {
 			Password: "123",
 			Auth:     "none",
 		},
-		{
-			Id:       "a03",
-			Name:     "Max",
-			Email:    "max@mail.com",
-			Bio:      "Default User",
-			Password: "123",
-			Auth:     "none",
-		},
 	}
 
 	db := make(map[string]User)

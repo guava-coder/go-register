@@ -33,6 +33,15 @@ func (repo UserRepository) QueryByInfo(user User) User {
 	return target
 }
 
+func (repo UserRepository) CheckAuth(user User) bool {
+	v := repo.QueryById(user.Id)
+	if v.Auth == user.Auth {
+		return true
+	} else {
+		return false
+	}
+}
+
 func (repo UserRepository) AddUser(user User) User {
 	repo.DB[user.Id] = user
 	return repo.DB[user.Id]
