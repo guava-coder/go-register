@@ -1,4 +1,6 @@
 <div class="container" style="overflow-y: auto;">
+    <button class="btn" onclick="location.reload()"><i class="bi bi-arrow-return-left"
+            style="font-size: 2em;"></i></button>
     <div hx-get="/static/view/login/login_form.html" hx-trigger="load" hx-swap="innerHTML"></div>
     <div class="row mb-4"></div>
     <div class="row mb-4">
@@ -7,7 +9,9 @@
         </div>
     </div>
     <div class="text-center">
-        <button type="button" class="btn btn-info btn-block mb-4" hx-get="/static/view/register/register.html"
-            hx-trigger="click" hx-swap="innerHTML" hx-target="#app">Register Now</button>
+        <button type="button" class="btn btn-secondary btn-block mb-4" hx-get="/static/view/register/register.html"
+            hx-trigger="click" hx-swap="innerHTML" hx-target="#app">
+            Register Now <i class="bi bi-pen-fill"></i>
+        </button>
     </div>
 </div>

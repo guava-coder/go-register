@@ -1,20 +1,16 @@
-<div class="text-center">
-    <div class="p-4 g-col-6"></div>
-    <h3>Login</h3>
-    <div class="p-4 g-col-6"></div>
-</div>
+<div class="p-4 g-col-6"></div>
 <form id="loginForm" method="post">
     <div class="form-floating mb-4">
         <input type="text" id="email" name="Email" class="form-control" />
         <label class="form-label" for="email">Email address</label>
     </div>
-
-    <div class="form-floating mb-4">
-        <input type="password" id="password" name="Password" class="form-control" />
-        <div class="input-group-addon">
-            <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+    <div class="input-group mb-3">
+        <div class="form-floating mb-4">
+            <input type="password" id="password" name="Password" class="form-control" aria-describedby="showPsw" />
+            <label class="form-label" for="password">Password</label>
         </div>
-        <label class="form-label" for="password">Password</label>
+        <span><button type="button" id="showPsw" class="btn bi bi-eye-slash-fill"
+                style="font-size: 2rem;"></button></span>
     </div>
 
     <div class="row mb-4">
@@ -24,7 +20,8 @@
     </div>
 
     <div class="text-center">
-        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Login<i
+                class="bi bi-box-arrow-in-right"></i></button>
     </div>
 </form>
 <script type="module" src="/static/view/login/login_form.js"></script>
