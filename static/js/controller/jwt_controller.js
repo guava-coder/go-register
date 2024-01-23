@@ -6,8 +6,8 @@ export default function JwtController () {
   return {
     login: async (bodyStr = '') => {
       const statusHandler = HttpStatusHandler()
-      statusHandler.BadRequest = () => alert('電子郵件錯誤')
-      statusHandler.Unauthorized = () => alert('密碼錯誤')
+      statusHandler.BadRequest = () => console.log('email address incorrect')
+      statusHandler.Unauthorized = () => console.log('password incorrect or user unauthorized')
 
       return fetch('/api/v1/jwt/login', {
         method: 'POST',
@@ -17,7 +17,7 @@ export default function JwtController () {
         })
       }).then(res => ResponseHandler().run(res, statusHandler))
         .then(data => UserToken().set(data.Token))
-        .catch(err => console.log(err))
+        .catch(err => alert(err.Response))
     }
   }
 }

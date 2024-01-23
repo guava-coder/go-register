@@ -46,7 +46,7 @@ func (serv JwtService) Login(ctx *gin.Context) {
 				getJWT(ua.MustGetOriginAuth(), user)
 			} else {
 				ctx.JSON(http.StatusUnauthorized, gin.H{
-					"Response": "User doesn't have an authorized key " + user.Auth,
+					"Response": "User doesn't have functional authorized key",
 				})
 			}
 		} else {
@@ -60,7 +60,7 @@ func (serv JwtService) Login(ctx *gin.Context) {
 		user := serv.userRepo.QueryByInfo(us)
 		if user.Id == "" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "Unauthorized User",
+				"Response": "Not a User",
 			})
 		} else {
 			verifyUser(us, user)
