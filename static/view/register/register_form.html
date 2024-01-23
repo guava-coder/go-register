@@ -13,13 +13,21 @@
         <label class="form-label" for="email">Email address</label>
     </div>
     <hr>
-    <div class="form-floating mb-4">
-        <input type="password" id="password" name="Password" class="form-control" />
-        <label class="form-label" for="password">Password</label>
+    <div class="input-group mb-3">
+        <div class="form-floating mb-4">
+            <input type="password" id="password" name="Password" class="form-control" aria-describedby="showPsw" />
+            <label class="form-label" for="password">Password</label>
+        </div>
+        <span><button type="button" id="showPsw" class="btn bi bi-eye-slash-fill"
+                style="font-size: 2rem;"></button></span>
     </div>
-    <div class="form-floating mb-4">
-        <input type="password" id="confirmpw" name="ConfirmPw" class="form-control" />
-        <label class="form-label" for="confirmpw">Confirm Password</label>
+    <div class="input-group mb-3">
+        <div class="form-floating mb-4">
+            <input type="password" id="confirmpw" name="ConfirmPw" class="form-control" aria-describedby="showConfirmPsw"/>
+            <label class="form-label" for="confirmpw">Confirm Password</label>
+        </div>
+        <span><button type="button" id="showConfirmPsw" class="btn bi bi-eye-slash-fill"
+                style="font-size: 2rem;"></button></span>
     </div>
     <div class="alert alert-warning alert-dismissible fade show" role="alert" hidden>
         <div id="alertText">Message</div>

@@ -1,4 +1,5 @@
 import JwtController from '../../js/controller/jwt_controller.js'
+import Bootstrap5ShowPassword from '../../js/util/bootstrap5_show_password.js'
 
 document.querySelector('#loginForm').addEventListener('submit', function (e) {
   e.preventDefault()
@@ -10,24 +11,4 @@ document.querySelector('#loginForm').addEventListener('submit', function (e) {
 })
 
 const showPsw = document.querySelector('#showPsw')
-showPsw.onclick = () => {
-  const password = document.querySelector('#password')
-  const classes = showPsw.classList
-  const ishow = 'bi-eye-fill'
-  const ihide = 'bi-eye-slash-fill'
-  const showPassword = () => {
-    classes.remove(ihide)
-    classes.add(ishow)
-    password.type = 'text'
-  }
-  const hidePassword = () => {
-    classes.remove(ishow)
-    classes.add(ihide)
-    password.type = 'password'
-  }
-  if (classes.contains(ishow)) {
-    hidePassword()
-  } else if (classes.contains(ihide)) {
-    showPassword()
-  }
-}
+showPsw.onclick = () => Bootstrap5ShowPassword(showPsw, '#password')
