@@ -10,8 +10,16 @@ function Test () {
           u.assertNotTrue(data === undefined)
           console.log(data)
         })
+    },
+    testSendVerificationMail: (u = UnitTest()) => {
+      controller.sendVerificationMail('{"Email":"###@mail.com"}')
+        .then(data => {
+          u.assertNotTrue(data === undefined)
+          console.log(data)
+        })
     }
   }
 }
 
+Test().testSendVerificationMail(UnitTest('testSendVerificationMail'))
 Test().testVerifyEmail(UnitTest('testVerifyEmail'))

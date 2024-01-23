@@ -7,17 +7,19 @@ import HttpStatusHandler from '../request/http_status_handler.js'
  * @export
  * @return {{
  * verifyEmail:(bodyStr = '') => {}
+ * sendVerificationMail: (bodyStr = '') => {}
  * }}
  */
 export default function EmailController () {
   const getHandler = () => {
     const statusHandler = HttpStatusHandler()
-    statusHandler.BadRequest = () => console.log('not jwt')
+    statusHandler.BadRequest = () => console.log('user email incorrect')
     return statusHandler
   }
   const serv = EmailService()
   return {
-    verifyEmail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/verify', bodyStr, statusHandler: getHandler() }) }
+    verifyEmail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/verify', bodyStr, statusHandler: getHandler() }) },
+    sendVerificationMail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/send', bodyStr, statusHandler: getHandler() }) }
   }
 }
 
