@@ -39,7 +39,7 @@ func DBInit() map[string]User {
 	for _, v := range usrs {
 		psw, err := bcrypt.GenerateFromPassword([]byte(v.Password), 0)
 		if err != nil {
-			log.Println(v.Id + " password hash failed.")
+			log.Fatal(v.Id + " password hash failed.")
 		}
 		v.Password = string(psw)
 		db[v.Id] = v
