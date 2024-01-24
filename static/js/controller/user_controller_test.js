@@ -15,11 +15,11 @@ function UserControllerTest () {
     testAddUser: (u = UnitTest()) => {
       controller.addUser(`{
     "Id": "",
-    "Name": "eric",
-    "Email": "ericwangcatch@gmail.com",
+    "Name": "test",
+    "Email": test@mail.com",
     "Bio":"test",
     "Password": "123",
-    "Auth": "QQQQ"}`)
+    "Auth": "test"}`)
         .catch(err => console.log(err))
         .then(data => {
           u.assertNotTrue(data === undefined)
