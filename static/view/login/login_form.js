@@ -7,6 +7,7 @@ document.querySelector('#loginForm').addEventListener('submit', function (e) {
   const userData = Object.fromEntries(formData)
 
   JwtController().login(JSON.stringify(userData))
+    .catch(err => console.log(err))
     .then(data => { if (data !== undefined) location.reload() })
 })
 

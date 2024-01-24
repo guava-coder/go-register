@@ -32,7 +32,7 @@ func (app GoRegister) Init() {
 	index(router)
 
 	addr := "localhost"
-	port := ":8081"
+	port := ":8082"
 
 	err := router.Run(addr + port)
 	if err != nil {
