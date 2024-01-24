@@ -72,7 +72,7 @@ func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
 	var handler EmailHandler
 
 	addFakeUserAuthAndSendMail := func(ctx *gin.Context, user User) {
-		CheckUserExist(serv.userRepo.QueryByInfo(user),
+		CheckUserExist(serv.userRepo.QueryById(user.Id),
 			func() {
 				ctx.JSON(http.StatusBadRequest, gin.H{
 					"Response": "User email incorrect.",

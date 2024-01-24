@@ -41,5 +41,5 @@ func (ctr UserController) QueryById() {
 }
 
 func (ctr UserController) UpdateUserAuth() {
-	ctr.group.POST("auth/", ctr.service.UpdateUserAuth)
+	ctr.group.PUT("auth/", ctr.service.UpdateUserAuth)
 }

@@ -17,7 +17,6 @@ export default function Ajaj () {
       body: arg.bodyStr,
       headers: arg.headers
     }).then(res => ResponseHandler().run(res, arg.statusHandler))
-      .catch(err => console.log(err))
   }
 
   return {

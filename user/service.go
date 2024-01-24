@@ -46,6 +46,8 @@ func (serv UserService) AddUser(ctx *gin.Context, user User) {
 		uuid := uuid.New()
 		us.Id = uuid.String()
 
+		us.Auth = ""
+
 		result := serv.repo.AddUser(us)
 
 		if result.Id == "" {
@@ -107,7 +109,7 @@ func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 			changeUserAuthToReal(usr.Id)
 		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "User ID incorrect",
+				"Response": "User ID or Token incorrect",
 			})
 		}
 

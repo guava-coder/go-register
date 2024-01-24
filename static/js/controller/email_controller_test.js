@@ -6,13 +6,15 @@ function Test () {
   return {
     testVerifyEmail: (u = UnitTest()) => {
       controller.verifyEmail('{"Email":"###@mail.com"}')
+        .catch(err => console.log(err))
         .then(data => {
           u.assertNotTrue(data === undefined)
           console.log(data)
         })
     },
     testSendVerificationMail: (u = UnitTest()) => {
-      controller.sendVerificationMail('{"Email":"###@mail.com"}')
+      controller.sendVerificationMail('{"Email":"###@gmail.com"}')
+        .catch(err => console.log(err))
         .then(data => {
           u.assertNotTrue(data === undefined)
           console.log(data)

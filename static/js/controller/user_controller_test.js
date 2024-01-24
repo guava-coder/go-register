@@ -6,6 +6,32 @@ function UserControllerTest () {
   return {
     testFindUserData: (u = UnitTest()) => {
       controller.findUserData()
+        .catch(err => console.log(err))
+        .then(data => {
+          u.assertNotTrue(data === undefined)
+          console.log(data)
+        })
+    },
+    testAddUser: (u = UnitTest()) => {
+      controller.addUser(`{
+    "Id": "",
+    "Name": "eric",
+    "Email": "ericwangcatch@gmail.com",
+    "Bio":"test",
+    "Password": "123",
+    "Auth": "QQQQ"}`)
+        .catch(err => console.log(err))
+        .then(data => {
+          u.assertNotTrue(data === undefined)
+          console.log(data)
+        })
+    },
+    testUpdateUserAuth: (u = UnitTest()) => {
+      controller.updateUserAuth(`{
+    "Id": "e2c18694-a181-42f8-8860-9209b9e5a40c",
+    "Auth": "9S77BV"
+  }`)
+        .catch(err => console.log(err))
         .then(data => {
           u.assertNotTrue(data === undefined)
           console.log(data)
@@ -15,3 +41,5 @@ function UserControllerTest () {
 }
 
 UserControllerTest().testFindUserData(UnitTest('testFindUserData'))
+UserControllerTest().testAddUser(UnitTest('testAddUser'))
+UserControllerTest().testUpdateUserAuth(UnitTest('testUpdateUserAuth'))
