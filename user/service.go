@@ -39,7 +39,7 @@ func (serv UserService) QueryById(ctx *gin.Context, id string) {
 	}
 }
 
-func (serv UserService) AddUser(ctx *gin.Context) {
+func (serv UserService) AddUser(ctx *gin.Context, user User) {
 	handleAddUser := func(us User, psw string) {
 		us.Password = psw
 
@@ -80,7 +80,7 @@ func (serv UserService) AddUser(ctx *gin.Context) {
 		}
 	}
 
-	serv.readAndHandleRequestBody(ctx, hashUserPasswordAndInsert)
+	hashUserPasswordAndInsert(user)
 }
 
 func (serv UserService) UpdateUserAuth(ctx *gin.Context) {

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	. "goregister.com/app/email"
 	. "goregister.com/app/jwt"
 	. "goregister.com/app/user"
 )
@@ -26,7 +27,10 @@ func (ctr UserController) Run() {
 }
 
 func (ctr UserController) AddUser() {
-	ctr.group.POST("add/", ctr.service.AddUser)
+	ctr.group.POST("add/", func(ctx *gin.Context) {
+		var handler EmailHandler
+		handler.VerifyUserEmail(ctx, ctr.service.AddUser)
+	})
 }
 
 func (ctr UserController) QueryById() {
