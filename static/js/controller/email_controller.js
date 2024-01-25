@@ -13,7 +13,7 @@ import HttpStatusHandler from '../request/http_status_handler.js'
 export default function EmailController () {
   const getHandler = () => {
     const statusHandler = HttpStatusHandler()
-    statusHandler.BadRequest = () => console.log('user email incorrect')
+    statusHandler.BadRequest = () => alert('user not exist')
     return statusHandler
   }
   const serv = EmailService()

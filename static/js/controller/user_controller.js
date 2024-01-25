@@ -25,8 +25,7 @@ export default function UserController () {
 
   const addUserHandler = () => {
     const handler = HttpStatusHandler()
-    handler.BadRequest = () => alert('Please complete register form')
-    handler.Unauthorized = () => alert('Email address invaild')
+    handler.Unauthorized = () => console.log('Email address invaild')
     return handler
   }
 
