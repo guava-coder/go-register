@@ -13,11 +13,13 @@ import (
 
 type JwtService struct {
 	userRepo UserRepository
+	userAuth UserAuth
 }
 
-func NewJwtService(userRepo UserRepository) JwtService {
+func NewJwtService(userRepo UserRepository, userAuth UserAuth) JwtService {
 	return JwtService{
 		userRepo: userRepo,
+		userAuth: userAuth,
 	}
 }
 
@@ -41,9 +43,8 @@ func (serv JwtService) Login(ctx *gin.Context) {
 	verifyUser := func(input User, user User) {
 		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
 		if err == nil {
-			var ua UserAuth
-			if ua.MustIsAuth([]byte(user.Auth)) {
-				getJWT(ua.MustGetOriginAuth(), user)
+			if serv.userAuth.MustIsAuth([]byte(user.Auth)) {
+				getJWT(serv.userAuth.MustGetOriginAuth(), user)
 			} else {
 				ctx.JSON(http.StatusUnauthorized, gin.H{
 					"Response": "User doesn't have functional authorized key",
@@ -70,8 +71,8 @@ func (serv JwtService) Login(ctx *gin.Context) {
 }
 
 func (serv JwtService) VerifyBearerToken(ctx *gin.Context) {
-	var verf BearerVerfier
-	verf.VerifyBearerToken(ctx,
+	verf := NewBearerVerfier(serv.userAuth, ctx)
+	verf.VerifyBearerToken(
 		func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{
 				"Response": "Authorized",

@@ -13,11 +13,13 @@ import (
 
 type UserService struct {
 	repo UserRepository
+	UserAuth
 }
 
-func NewUserService(repo UserRepository) UserService {
+func NewUserService(repo UserRepository, userAuth UserAuth) UserService {
 	return UserService{
-		repo: repo,
+		repo:     repo,
+		UserAuth: userAuth,
 	}
 }
 
@@ -87,10 +89,9 @@ func (serv UserService) AddUser(ctx *gin.Context, user User) {
 
 func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 	changeUserAuthToReal := func(id string) {
-		var auth UserAuth
 		usrWithAuth := User{
 			Id:   id,
-			Auth: string(auth.MustGetHashAuth()),
+			Auth: string(serv.UserAuth.MustGetHashAuth()),
 		}
 		res := serv.repo.UpdateUserAuth(usrWithAuth)
 		if res.Auth == "" {

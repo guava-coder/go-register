@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	auth "goregister.com/app/auth"
 	. "goregister.com/app/controller"
 	. "goregister.com/app/db"
 	email "goregister.com/app/email"
@@ -14,10 +15,15 @@ import (
 
 type GoRegister struct{}
 
+var (
+	userAuth = auth.NewUserAuth("./auth.txt")
+	sender   = email.NewMailSender("./provider.json")
+)
+
 func initControllers(router *gin.Engine) {
-	NewUserController(user.NewUserService(userRepo), router).Run()
-	NewJwtController(jwt.NewJwtService(userRepo), router).Run()
-	NewEmailController(email.NewEmailService(userRepo), router).Run()
+	NewUserController(user.NewUserService(userRepo, userAuth), router).Run()
+	NewJwtController(jwt.NewJwtService(userRepo, userAuth), router).Run()
+	NewEmailController(email.NewEmailService(userRepo, sender), router).Run()
 }
 
 func (app GoRegister) Init() {

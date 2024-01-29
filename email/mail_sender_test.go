@@ -3,12 +3,13 @@ package email
 import "testing"
 
 var (
-	recevier = "###@gmail.com"
-	sender   MailSender
+	recevier    = "###@gmail.com"
+	providerUri = "../provider.json"
+	sender      = NewMailSender(providerUri)
 )
 
 func TestMustGetProvider(t *testing.T) {
-	provider := mustGetProvider()
+	provider := mustGetProvider(providerUri)
 	if provider.Sender == "" {
 		t.Fatal()
 	} else {

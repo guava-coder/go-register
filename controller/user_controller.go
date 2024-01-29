@@ -35,8 +35,8 @@ func (ctr UserController) AddUser() {
 
 func (ctr UserController) QueryById() {
 	ctr.group.POST("query/", func(ctx *gin.Context) {
-		var verf BearerVerfier
-		verf.ExtractUserIdFromBearer(ctx, ctr.service.QueryById)
+		verifier := NewBearerVerfier(ctr.service.UserAuth, ctx)
+		verifier.ExtractUserIdFromBearer(ctr.service.QueryById)
 	})
 }
 

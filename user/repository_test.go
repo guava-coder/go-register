@@ -77,7 +77,7 @@ func TestDeleteUser(t *testing.T) {
 
 func TestUpdateUserAuth(t *testing.T) {
 	runRepoOperation(func(ur UserRepository) {
-		var auth UserAuth
+		auth := NewUserAuth("../auth.txt")
 		user := User{
 			Id:   "a01",
 			Auth: string(auth.MustGetHashAuth()),

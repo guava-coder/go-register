@@ -11,12 +11,14 @@ import (
 )
 
 type EmailService struct {
-	userRepo UserRepository
+	userRepo   UserRepository
+	mailSender MailSender
 }
 
-func NewEmailService(userRepo UserRepository) EmailService {
+func NewEmailService(userRepo UserRepository, m MailSender) EmailService {
 	return EmailService{
-		userRepo: userRepo,
+		userRepo:   userRepo,
+		mailSender: m,
 	}
 }
 
@@ -37,9 +39,8 @@ func getVerificationMailForm(receiver User) Email {
 	return form
 }
 
-func sendVerificationMail(receiver User, ctx *gin.Context) {
-	var sender MailSender
-	err := sender.SendMail(getVerificationMailForm(receiver))
+func (serv EmailService) sendVerificationMail(receiver User, ctx *gin.Context) {
+	err := serv.mailSender.SendMail(getVerificationMailForm(receiver))
 	if err == nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"Response": "A verification mail has sended, please check your email and verify it.",
@@ -83,7 +84,7 @@ func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
 					Id:   u.Id,
 					Auth: RandStringBytes(6),
 				})
-				sendVerificationMail(user, ctx)
+				serv.sendVerificationMail(user, ctx)
 			},
 		)
 	}

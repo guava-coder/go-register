@@ -15,8 +15,8 @@ type EmailProvider struct {
 	Host   string
 }
 
-func mustGetProvider() EmailProvider {
-	data, err := os.ReadFile("./provider.json")
+func mustGetProvider(uri string) EmailProvider {
+	data, err := os.ReadFile(uri)
 
 	if err != nil {
 		log.Println(err)
@@ -30,7 +30,16 @@ func mustGetProvider() EmailProvider {
 	return provider
 }
 
-type MailSender struct{}
+type MailSender struct {
+	EmailProvider
+}
+
+func NewMailSender(providerUri string) MailSender {
+	p := mustGetProvider(providerUri)
+	return MailSender{
+		EmailProvider: p,
+	}
+}
 
 type Email struct {
 	Receiver string
@@ -39,7 +48,7 @@ type Email struct {
 }
 
 func (sender MailSender) SendMail(em Email) error {
-	provider := mustGetProvider()
+	provider := sender.EmailProvider
 
 	m := mail.NewMessage()
 	m.SetHeader("From", provider.Sender)

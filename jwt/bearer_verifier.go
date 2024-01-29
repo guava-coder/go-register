@@ -9,7 +9,17 @@ import (
 	. "goregister.com/app/auth"
 )
 
-type BearerVerfier struct{}
+type BearerVerfier struct {
+	userAuth UserAuth
+	Ctx      *gin.Context
+}
+
+func NewBearerVerfier(userAuth UserAuth, ctx *gin.Context) BearerVerfier {
+	return BearerVerfier{
+		userAuth: userAuth,
+		Ctx:      ctx,
+	}
+}
 
 func isVerified(bearer string, userAuth []byte) bool {
 	token := strings.ReplaceAll(bearer, "Bearer ", "")
@@ -18,60 +28,58 @@ func isVerified(bearer string, userAuth []byte) bool {
 	return res
 }
 
-func handleVerifyFailed(bearer string, ctx *gin.Context) {
+func (verf BearerVerfier) handleVerifyFailed(bearer string) {
 	if len(bearer) > 0 {
-		ctx.JSON(http.StatusUnauthorized, gin.H{
+		verf.Ctx.JSON(http.StatusUnauthorized, gin.H{
 			"Response": "Token expired or not jwt.",
 		})
 	} else {
-		ctx.JSON(http.StatusBadRequest, gin.H{
+		verf.Ctx.JSON(http.StatusBadRequest, gin.H{
 			"Response": "No bearer token found in header.",
 		})
 	}
 }
 
-func handleBearerToken(bearer string, ctx *gin.Context, authOp func(ctx *gin.Context)) {
-	var ua UserAuth
-	if isVerified(bearer, ua.MustGetOriginAuth()) {
-		authOp(ctx)
+func (verf BearerVerfier) handleBearerToken(bearer string, authOp func(ctx *gin.Context)) {
+	if isVerified(bearer, verf.userAuth.MustGetOriginAuth()) {
+		authOp(verf.Ctx)
 	} else {
-		handleVerifyFailed(bearer, ctx)
+		verf.handleVerifyFailed(bearer)
 	}
 }
 
-func (verf BearerVerfier) VerifyBearerToken(ctx *gin.Context, authOp func(ctx *gin.Context)) {
-	bearers := ctx.Request.Header["Authorization"]
+func (verf BearerVerfier) VerifyBearerToken(authOp func(ctx *gin.Context)) {
+	bearers := verf.Ctx.Request.Header["Authorization"]
 	if len(bearers) > 0 {
-		handleBearerToken(bearers[0], ctx, authOp)
+		verf.handleBearerToken(bearers[0], authOp)
 	} else {
-		ctx.JSON(http.StatusBadRequest, gin.H{
+		verf.Ctx.JSON(http.StatusBadRequest, gin.H{
 			"Response": "No Authrization",
 		})
 	}
 }
 
-func handleUserIdFromJWT(bearer string, ctx *gin.Context, authOp func(ctx *gin.Context, id string)) {
-	var ua UserAuth
+func (verf BearerVerfier) handleUserIdFromJWT(bearer string, authOp func(ctx *gin.Context, id string)) {
 	token := strings.ReplaceAll(bearer, "Bearer ", "")
 	var provider JwtProvider
-	claims := provider.MustGetJWTClaims(ua.MustGetOriginAuth(), token)
+	claims := provider.MustGetJWTClaims(verf.userAuth.MustGetOriginAuth(), token)
 
 	if claims == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{
+		verf.Ctx.JSON(http.StatusUnauthorized, gin.H{
 			"Response": "JWT verify failed",
 		})
 	} else {
 		id := fmt.Sprint(claims["id"])
-		authOp(ctx, id)
+		authOp(verf.Ctx, id)
 	}
 }
 
-func (verf BearerVerfier) ExtractUserIdFromBearer(ctx *gin.Context, authOp func(ctx *gin.Context, id string)) {
-	bearers := ctx.Request.Header["Authorization"]
+func (verf BearerVerfier) ExtractUserIdFromBearer(authOp func(ctx *gin.Context, id string)) {
+	bearers := verf.Ctx.Request.Header["Authorization"]
 	if len(bearers) > 0 {
-		handleUserIdFromJWT(bearers[0], ctx, authOp)
+		verf.handleUserIdFromJWT(bearers[0], authOp)
 	} else {
-		ctx.JSON(http.StatusBadRequest, gin.H{
+		verf.Ctx.JSON(http.StatusBadRequest, gin.H{
 			"Response": "No Authrization",
 		})
 	}
