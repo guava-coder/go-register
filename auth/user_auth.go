@@ -1,24 +1,29 @@
 package auth
 
 import (
-	"embed"
 	"log"
+	"os"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
-//go:embed auth.txt
-var embedKey embed.FS
+type UserAuth struct {
+	keyUri string
+}
+
+func NewUserAuth(keyUri string) UserAuth {
+	return UserAuth{
+		keyUri: keyUri,
+	}
+}
 
 func (ua UserAuth) MustGetOriginAuth() []byte {
-	key, err := embedKey.ReadFile("auth.txt")
+	key, err := os.ReadFile(ua.keyUri)
 	if err != nil {
 		log.Println(err)
 	}
 	return key
 }
-
-type UserAuth struct{}
 
 func (ua UserAuth) MustGetHashAuth() []byte {
 	bytes, err := bcrypt.GenerateFromPassword(ua.MustGetOriginAuth(), 0)

@@ -1,8 +1,5 @@
 import UserController from '../../js/controller/user_controller.js'
 
-CheckLogin()
-
-function CheckLogin () {
   const fetchHTMLPage = (url = '', handleData = () => {}) => {
     const content = document.querySelector('#content')
     fetch(url)
@@ -26,4 +23,3 @@ function CheckLogin () {
         })
       }
     })
-}

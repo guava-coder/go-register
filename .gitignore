@@ -3,3 +3,4 @@ package.json
 package-lock.json
 .eslintrc.js
 provider.json
+app.exe

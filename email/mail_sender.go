@@ -1,9 +1,9 @@
 package email
 
 import (
-	"embed"
 	"encoding/json"
 	"log"
+	"os"
 
 	emailverifier "github.com/AfterShip/email-verifier"
 	mail "gopkg.in/gomail.v2"
@@ -15,14 +15,13 @@ type EmailProvider struct {
 	Host   string
 }
 
-//go:embed provider.json
-var embedKey embed.FS
-
 func mustGetProvider() EmailProvider {
-	data, err := embedKey.ReadFile("provider.json")
+	data, err := os.ReadFile("./provider.json")
+
 	if err != nil {
 		log.Println(err)
 	}
+
 	var provider EmailProvider
 	err = json.Unmarshal(data, &provider)
 	if err != nil {
