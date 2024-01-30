@@ -3,7 +3,7 @@
 ### Register/Login web app, Restiful APIs and JWT 
 
  ---
- > Go-Register is a full-stack, single-page web app provides features around user register and login.
+ > Go-Register is a full-stack, single-page web app that provides features around user registration and login.
 
  > It has a clean, responsive UI, and great extensibility.
 
@@ -19,7 +19,7 @@
  1. Data storage
    >> User Data are stored in hashmap, thus the app can start without the database. But keep in mind using a database to persist data is very important. 
  2. JWT generate
-   >> JWT are produced by the key in auth.txt file, if you want to use this project elsewhere, remember to change and hide the key to prevent security vulnerability. 
+   >> JWT is produced by the key in auth.txt file, if you want to use this project elsewhere, make sure to change and hide the key to prevent security vulnerability.
  ---
 ## How to start
 
@@ -33,7 +33,7 @@
 
  > After run, open the app in browser with url below:
 
-    http://localhost:8082
+    http://localhost:8082/
 
 ## Login
  > By default, there is one authorized user, you can use it to log in successfully:
@@ -41,7 +41,7 @@
     Email:    "mark@mail.com",
 	Password: "123"
 
- > There is also one unauthorized user, you can use it to test login failed:
+ > There is also one unauthorized user, you can use it to try login failed:
 
     Email:    "lisa@mail.com",
     Password: "123"
@@ -57,7 +57,7 @@
         "Host":"smtp.gmail.com"
     }
 
- > You can also use [MailTrap](https://mailtrap.io/), you can find tutorial [here](https://mailtrap.io/blog/golang-send-email/).
+ > You can also use [MailTrap](https://mailtrap.io/), there is a tutorial [here](https://mailtrap.io/blog/golang-send-email/).
  ---
  
  <table>
