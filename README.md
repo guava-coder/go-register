@@ -1,7 +1,7 @@
 # GO-Register
 
  ---
- > Go-Register is a full-stack, single-page web app that provides features around user registration and login.
+ > Go-Register is a full-stack, single-page website that implements user registration and login features.
 
  > It has a clean, responsive UI, and great extensibility.
 
@@ -36,13 +36,13 @@
 ## Login
  > By default, there is one authorized user, use it to log in successfully:
  
-    Email:    "mark@mail.com",
-	Password: "123"
+    Email: mark@mail.com
+    Password: 123
 
  > There is also one unauthorized user, use it to try login failed:
 
-    Email:    "lisa@mail.com",
-    Password: "123"
+    Email: lisa@mail.com
+    Password: 123
 
 ## Set Up Email Verification
  > Email verification is necessary for some features like completing registration, changing email, etc...
