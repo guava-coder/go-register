@@ -76,9 +76,9 @@
         <td>V</td>
     </tr> 
     <tr>
-        <td>Login with JWT</td>
+        <td>Login</td>
         <td>V</td>
-        <td>X(auth.txt file)</td>
+        <td>X</td>
     </tr> 
     <tr>
         <td>Restore Password</td>
