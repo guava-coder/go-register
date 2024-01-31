@@ -1,7 +1,5 @@
 # GO-Register
 
-### Register/Login web app, Restful APIs, and JWT 
-
  ---
  > Go-Register is a full-stack, single-page web app that provides features around user registration and login.
 
