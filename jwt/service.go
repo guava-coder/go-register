@@ -27,6 +27,16 @@ func (serv JwtService) readAndHandleRequestBody(ctx *gin.Context, op func(User))
 	ReadAndHandleRequestBody[User](ctx, op)
 }
 
+func (serv JwtService) CheckUserPassword(input User, handleBadRequest func(statusCode int)) (User, error) {
+	user, exist := serv.userRepo.IsUserExist(input)
+	if exist {
+		return user, bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
+	} else {
+		handleBadRequest(http.StatusBadRequest)
+		return user, nil
+	}
+}
+
 func (serv JwtService) Login(ctx *gin.Context) {
 	getJWT := func(key []byte, user User) {
 		var provider JwtProvider
@@ -40,31 +50,30 @@ func (serv JwtService) Login(ctx *gin.Context) {
 		}
 	}
 
-	verifyUser := func(input User, user User) {
-		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
-		if err == nil {
-			if serv.userAuth.MustIsAuth([]byte(user.Auth)) {
-				getJWT(serv.userAuth.MustGetOriginAuth(), user)
-			} else {
-				ctx.JSON(http.StatusUnauthorized, gin.H{
-					"Response": "User doesn't have functional authorized key",
-				})
-			}
+	checkUserAuthorized := func(user User) {
+		if serv.userAuth.MustIsAuth([]byte(user.Auth)) {
+			getJWT(serv.userAuth.MustGetOriginAuth(), user)
 		} else {
-			ctx.JSON(http.StatusForbidden, gin.H{
-				"Response": "Password incorrect",
+			ctx.JSON(http.StatusUnauthorized, gin.H{
+				"Response": "User doesn't have functional authorized key",
+				"Id":       user.Id,
 			})
 		}
 	}
 
-	getToken := func(us User) {
-		user := serv.userRepo.QueryByInfo(us)
-		if user.Id == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "Not a User",
+	getToken := func(input User) {
+		user, err := serv.CheckUserPassword(input, func(code int) {
+			ctx.JSON(code, gin.H{
+				"Response": "User not exist",
 			})
-		} else {
-			verifyUser(us, user)
+		})
+		if err != nil {
+			ctx.JSON(http.StatusForbidden, gin.H{
+				"Response": "Password incorrect",
+			})
+		}
+		if user.Auth != "" {
+			checkUserAuthorized(user)
 		}
 	}
 	serv.readAndHandleRequestBody(ctx, getToken)

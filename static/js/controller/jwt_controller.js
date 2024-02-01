@@ -1,11 +1,13 @@
 import GotoVerifyPage from '../../view/verification/go_to_verify_page.js'
 import HttpStatusHandler from '../request/http_status_handler.js'
 import ResponseHandler from '../request/response_handler.js'
+import UserToken from '../cookie/user_token.js'
 
 export default function JwtController () {
   return {
     login: async (bodyStr = '') => {
       const statusHandler = HttpStatusHandler()
+
       statusHandler.BadRequest = () => alert('email address incorrect')
       statusHandler.Forbidden = () => alert('password incorrect')
       statusHandler.Unauthorized = () => {
@@ -22,6 +24,8 @@ export default function JwtController () {
           'Content-Type': 'application/json'
         })
       }).then(res => ResponseHandler().run(res, statusHandler))
+        .catch(err => console.log(err))
+        .then(data => UserToken().set(data.Token))
     }
   }
 }

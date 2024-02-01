@@ -68,3 +68,8 @@ func (repo UserRepository) UpdateUserAuth(user User) User {
 	repo.DB[user.Id] = temp
 	return repo.DB[user.Id]
 }
+
+func (repo UserRepository) IsUserExist(input User) (User, bool) {
+	user := repo.QueryByInfo(input)
+	return user, (user.Id != "")
+}
