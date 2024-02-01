@@ -5,8 +5,9 @@ function JwtControllerTest () {
   const jwtController = JwtController()
   return {
     testLogin: (u = UnitTest()) => {
-      jwtController.login('{"Email":"mark@mail.com","Password":"123"}')
-        .then(() => u.assertTrue(true))
+      jwtController.login('{"Email":"lisa@mail.com","Password":"123"}')
+        .catch(err => console.log(err))
+        .then(data => u.assertNotTrue(data === undefined))
     }
   }
 }
