@@ -1,9 +1,7 @@
 # GO-Register
 
-### Register/Login web app, Restiful APIs and JWT 
-
  ---
- > Go-Register is a full-stack, single-page web app that provides features around user registration and login.
+ > Go-Register is a full-stack, single-page website that implements user registration and login features.
 
  > It has a clean, responsive UI, and great extensibility.
 
@@ -17,9 +15,9 @@
  ---
  ## Before you start...
  1. Data storage
-   >> User Data are stored in hashmap, thus the app can start without the database. But keep in mind using a database to persist data is very important. 
+   >> User Data are stored in a Hashmap, thus the app can start without the database. But keep in mind using a database to persist data is very important. 
  2. JWT generate
-   >> JWT is produced by the key in auth.txt file, if you want to use this project elsewhere, make sure to change and hide the key to prevent security vulnerability.
+   >> The key in the auth.txt file produces the JWT token, if you want to use this project elsewhere, make sure to change and hide the key to prevent security vulnerability.
  ---
 ## How to start
 
@@ -31,30 +29,30 @@
 
     ./app.exe
 
- > After run, open the app in browser with url below:
+ > After running, open the app in the browser with the URL below:
 
     http://localhost:8082/
 
 ## Login
- > By default, there is one authorized user, you can use it to log in successfully:
+ > By default, there is one authorized user, use it to log in successfully:
  
-    Email:    "mark@mail.com",
-	Password: "123"
+    Email: mark@mail.com
+    Password: 123
 
- > There is also one unauthorized user, you can use it to try login failed:
+ > There is also one unauthorized user, use it to try login failed:
 
-    Email:    "lisa@mail.com",
-    Password: "123"
+    Email: lisa@mail.com
+    Password: 123
 
 ## Set Up Email Verification
  > Email verification is necessary for some features like completing registration, changing email, etc...
 
- > To enable email verification feature, you need to add provider.json file, here is the example for gmail:
+ > To enable the email verification feature, you need to add a provider.json file, here is the example for Gmail:
 
     {
-        "Sender":"yourgmail@gmail.com",
-        "Token":"your password token",
-        "Host":"smtp.gmail.com"
+        "Sender": "yourgmail@gmail.com",
+        "Token": "your password token",
+        "Host": "smtp.gmail.com"
     }
 
  > You can also use [MailTrap](https://mailtrap.io/), there is a tutorial [here](https://mailtrap.io/blog/golang-send-email/).
@@ -78,9 +76,9 @@
         <td>V</td>
     </tr> 
     <tr>
-        <td>Login with JWT</td>
+        <td>Login</td>
         <td>V</td>
-        <td>X(auth.txt file)</td>
+        <td>X</td>
     </tr> 
     <tr>
         <td>Restore Password</td>
