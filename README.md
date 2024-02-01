@@ -14,10 +14,10 @@ If you are...
  
  ---
 ## Before you start...
- 1. Data storage
-   * User Data are stored in a Hashmap, thus the app can start without the database. But keep in mind using a database to persist data is very important. 
- 3. JWT generate
-   * The key in the auth.txt file is used to produce the JWT token, if you want to use this project elsewhere, make sure to change and hide the key to prevent security vulnerability.
+ 1. Data storage:
+    User Data are stored in a Hashmap, thus the app can start without the database. But keep in mind using a database to persist data is very important. 
+ 2. JWT generate:
+    The key in the auth.txt file is used to produce the JWT token, if you want to use this project elsewhere, make sure to change and hide the key to prevent security vulnerability.
  ---
 ## How to start
  
