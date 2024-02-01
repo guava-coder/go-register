@@ -16,9 +16,10 @@ document.querySelector('#loginForm').addEventListener('submit', function (e) {
         const authUser = confirm('This email hasn\'t been verified yet, do you want to verify it now ? ')
         if (authUser) {
           const unauthUser = { Id: err.Id, Email: userData.Email }
-          EmailController().sendVerificationMail(JSON.stringify(unauthUser))
+          const uStr = JSON.stringify(unauthUser)
+          EmailController().sendVerificationMail(uStr)
             .catch(err => console.log(err.Response))
-            .then(res => { if (res !== undefined) GotoVerifyPage(err.Id) })
+            .then(res => { if (res !== undefined) GotoVerifyPage(uStr) })
         }
       } else {
         console.log(err)

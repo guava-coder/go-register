@@ -1,8 +1,5 @@
 import UserController from '../../js/controller/user_controller.js'
-
-const auth = document.querySelector('#auth')
-const submit = document.querySelector('#submit')
-const id = document.querySelector('#userid')
+import EmailController from '../../js/controller/email_controller.js'
 
 const updateUserAuth = (body = '') => {
   UserController().updateUserAuth(body)
@@ -18,7 +15,13 @@ const updateUserAuth = (body = '') => {
     })
 }
 
-submit.onclick = () => {
-  const input = `{"Id":"${id.innerHTML}", "Auth":"${auth.value}"}`
-  updateUserAuth(input)
-}
+const userObj = JSON.parse(document.querySelector('#userdata').innerHTML)
+const input = { Id: userObj.Id, Auth: document.querySelector('#auth').value }
+
+document.querySelector('#submit').onclick = () => updateUserAuth(JSON.stringify(input))
+
+const resendMail = document.querySelector('#resend')
+
+resendMail.onclick = () => EmailController().sendVerificationMail(JSON.stringify(userObj))
+  .catch(err => console.log(err.Response))
+  .then(res => alert(res.Response))

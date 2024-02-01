@@ -12,7 +12,7 @@ const addUserAndSendVerificationCode = (body = '') => {
         <i class="bi bi-hourglass-split"></i>`
         EmailController().sendVerificationMail(JSON.stringify(data.User))
           .catch(err => alert(err.Response))
-          .then(res => { if (res !== undefined) GotoVerifyPage(data.User.Id) })
+          .then(res => { if (res !== undefined) GotoVerifyPage(data.User) })
       }
     })
 }
