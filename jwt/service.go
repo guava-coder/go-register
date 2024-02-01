@@ -51,7 +51,7 @@ func (serv JwtService) Login(ctx *gin.Context) {
 				})
 			}
 		} else {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
+			ctx.JSON(http.StatusForbidden, gin.H{
 				"Response": "Password incorrect",
 			})
 		}

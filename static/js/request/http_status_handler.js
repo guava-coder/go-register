@@ -6,16 +6,19 @@
  * @return {{
  * OK: () => { },
  * BadRequest: () => { },
- * Unauthorized: () => { }
+ * Unauthorized: () => { },
+ * Forbidden: () => {},
  * }}
  * OK() 200, 
  * BadRequest() 400, 
  * Unauthorized() 401, 
+ * Forbidden() 403,
  */
 export default function HttpStatusHandler () {
   return {
     OK: () => { },
     BadRequest: () => { },
     Unauthorized: () => { },
+    Forbidden: () => {},
   }
 }

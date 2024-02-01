@@ -31,8 +31,9 @@
         <button type="button" class="btn-close" onclick="document.querySelector('.alert').hidden=true"></button>
     </div>
     <div class="text-center">
-        <button type="submit" class="btn btn-primary btn-block mb-4" id="submit">Register<i class="bi bi-pen-fill"></i>
+        <button type="submit" id="submit" class="btn btn-primary btn-block mb-4" id="submit">Register<i class="bi bi-pen-fill"></i>
         </button>
+        <div id="wait" hidden>Verifying email address...<i class="bi bi-hourglass-split"></i></div>
     </div>
 </form>
 <script type="module" src="/static/view/register/register_form.js"></script>

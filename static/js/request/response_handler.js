@@ -22,6 +22,9 @@ export default function ResponseHandler () {
         case 401:
           statusHandler.Unauthorized()
           return d.then(rejectPromise())
+        case 403:
+          statusHandler.Forbidden()
+          return d.then(rejectPromise())
         case 404:
           alert('Cannot find resources')
           return d.then(rejectPromise())

@@ -1,0 +1,22 @@
+<div class="p-4 g-col-6"></div>
+<div class="p-4 g-col-6"></div>
+<div class="p-4 g-col-6"></div>
+<h4>We sended a verfication mail to your email address</h4>
+<h4>Please input the code to verify your email</h4>
+<div class="p-4 g-col-6"></div>
+<div class="form-floating mb-4">
+    <input type="text" id="auth" name="Auth" class="form-control" />
+    <label class="form-label" for="auth">Your Verification code</label>
+</div>
+<div class="text-center">
+    <button type="button" class="btn btn-primary btn-block mb-4" id="submit">confirm
+    </button>
+</div>
+<div class="p-4 g-col-6"></div>
+<hr>
+<div class="text-center">
+    <p>Didn't get the mail?</p>
+    <button type="button" class="btn btn-info btn-block mb-4" id="submit">Resend Mail
+    </button>
+</div>
+<div hx-get="/static/view/verification/verify_code.html" hx-swap="innerHTML" hx-trigger="load"></div>

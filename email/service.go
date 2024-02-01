@@ -52,14 +52,6 @@ func (serv EmailService) sendVerificationMail(receiver User, ctx *gin.Context) {
 	}
 }
 
-func CheckUserExist(user User, notExist func(), exist func(User)) {
-	if user.Email == "" {
-		notExist()
-	} else {
-		exist(user)
-	}
-}
-
 func RandStringBytes(length int) string {
 	const letterBytes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	b := make([]byte, length)
@@ -70,25 +62,22 @@ func RandStringBytes(length int) string {
 }
 
 func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
-	var handler EmailHandler
-
 	addFakeUserAuthAndSendMail := func(ctx *gin.Context, user User) {
-		CheckUserExist(serv.userRepo.QueryById(user.Id),
-			func() {
-				ctx.JSON(http.StatusBadRequest, gin.H{
-					"Response": "User email incorrect.",
-				})
-			},
-			func(u User) {
-				user := serv.userRepo.UpdateUserAuth(User{
-					Id:   u.Id,
-					Auth: RandStringBytes(6),
-				})
-				serv.sendVerificationMail(user, ctx)
-			},
-		)
+		foundU := serv.userRepo.QueryById(user.Id)
+		if foundU.Email == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": "User not found.",
+			})
+		} else {
+			updatedU := serv.userRepo.UpdateUserAuth(User{
+				Id:   foundU.Id,
+				Auth: RandStringBytes(6),
+			})
+			serv.sendVerificationMail(updatedU, ctx)
+		}
 	}
 
+	var handler EmailHandler
 	handler.VerifyUserEmail(ctx, addFakeUserAuthAndSendMail)
 }
 
