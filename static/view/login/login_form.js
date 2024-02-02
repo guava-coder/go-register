@@ -8,21 +8,25 @@ document.querySelector('#loginForm').addEventListener('submit', function (e) {
 
   const formData = new FormData(e.target)
   const userData = Object.fromEntries(formData)
-  const userStr = JSON.stringify(userData)
 
-  JwtController().login(userStr)
+  const handleUnauthorized = (err) => {
+    if (userData.Email !== '') {
+      const authUser = confirm('This email hasn\'t been verified yet, do you want to verify it now ? ')
+      if (authUser) {
+        const unauthUser = { Id: err.Id, Email: userData.Email }
+        const uStr = JSON.stringify(unauthUser)
+        EmailController().sendVerificationMail(uStr)
+          .catch(err => console.log(err.Response))
+          .then(res => { if (res !== undefined) GotoVerifyPage(uStr) })
+      }
+    }
+  }
+
+  JwtController().login(JSON.stringify(userData))
     .catch(err => {
-      if (err.Id !== null) {
-        const authUser = confirm('This email hasn\'t been verified yet, do you want to verify it now ? ')
-        if (authUser) {
-          const unauthUser = { Id: err.Id, Email: userData.Email }
-          const uStr = JSON.stringify(unauthUser)
-          EmailController().sendVerificationMail(uStr)
-            .catch(err => console.log(err.Response))
-            .then(res => { if (res !== undefined) GotoVerifyPage(uStr) })
-        }
-      } else {
-        console.log(err)
+      console.log(err)
+      if (err.Id !== undefined) {
+        handleUnauthorized(err)
       }
     })
     .then(data => {

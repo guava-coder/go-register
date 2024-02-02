@@ -64,8 +64,8 @@ func (verf BearerVerfier) handleUserIdFromJWT(bearer string, authOp func(ctx *gi
 	var provider JwtProvider
 	claims := provider.MustGetJWTClaims(verf.userAuth.MustGetOriginAuth(), token)
 
-	if claims == nil {
-		verf.Ctx.JSON(http.StatusUnauthorized, gin.H{
+	if claims["id"] == nil {
+		verf.Ctx.JSON(http.StatusForbidden, gin.H{
 			"Response": "JWT verify failed",
 		})
 	} else {

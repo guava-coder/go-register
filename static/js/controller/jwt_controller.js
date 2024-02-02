@@ -14,9 +14,9 @@ export default function JwtController () {
   return {
     login: async (bodyStr = '') => {
       const statusHandler = HttpStatusHandler()
-
-      statusHandler.BadRequest = () => alert('email address incorrect')
-      statusHandler.Forbidden = () => alert('password incorrect')
+      statusHandler.Unauthorized = () => console.log('User unauthorized')
+      statusHandler.BadRequest = () => alert('Please input your email and password')
+      statusHandler.Forbidden = () => alert('Password incorrect')
 
       return fetch('/api/v1/jwt/login', {
         method: 'POST',
@@ -25,7 +25,7 @@ export default function JwtController () {
           'Content-Type': 'application/json'
         })
       }).then(res => ResponseHandler().run(res, statusHandler))
-        .then(data => UserToken().set(data.Token))
+        .then(data => { if (data !== undefined) UserToken().set(data.Token) })
     }
   }
 }

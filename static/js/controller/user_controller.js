@@ -19,7 +19,9 @@ export default function UserController () {
   const jwtHeaderHandler = () => {
     const handler = HttpStatusHandler()
     handler.BadRequest = () => console.log('no jwt')
-    handler.Unauthorized = () => console.log('jwt verify failed, please login again.')
+    handler.Forbidden = () => {
+      console.log('jwt verify failed, please login again.')
+    }
     return handler
   }
 
