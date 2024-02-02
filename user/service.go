@@ -34,6 +34,8 @@ func (serv UserService) QueryById(ctx *gin.Context, id string) {
 			"Response": "User not found",
 		})
 	} else {
+		res.Password = ""
+		res.Auth = ""
 		ctx.JSON(http.StatusOK, gin.H{
 			"Response": "Found User",
 			"User":     res,

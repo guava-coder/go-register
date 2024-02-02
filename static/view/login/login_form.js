@@ -29,9 +29,6 @@ document.querySelector('#loginForm').addEventListener('submit', function (e) {
         handleUnauthorized(err)
       }
     })
-    .then(data => {
-      if (data !== undefined) location.reload()
-    })
 })
 
 const showPsw = document.querySelector('#showPsw')

@@ -25,7 +25,12 @@ export default function JwtController () {
           'Content-Type': 'application/json'
         })
       }).then(res => ResponseHandler().run(res, statusHandler))
-        .then(data => { if (data !== undefined) UserToken().set(data.Token) })
+        .then(data => {
+          if (data !== undefined) {
+            UserToken().set(data.Token)
+            location.reload()
+          }
+        })
     }
   }
 }
