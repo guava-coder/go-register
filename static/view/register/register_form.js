@@ -24,31 +24,41 @@ const addUserAndSendVerificationCode = (body = '') => {
 }
 
 /**
- *
- *
  * @param {string} [input='']
  * @param {string} [confirm='']
  * @return {boolean}
  */
-const isPasswordIncorrect = (input = '', confirm = '') => {
-  return input !== confirm && input === ''
+const isPasswordNotConfirmed = (input = '', confirm = '') => {
+  return input !== confirm || input === ''
 }
 
-document.querySelector('#registerForm').addEventListener('submit', function (e) {
-  e.preventDefault()
-
-  const formData = new FormData(e.target)
-  const userData = Object.fromEntries(formData)
-
-  if (isPasswordIncorrect(userData.Password, userData.ConfirmPw)) {
-    alert('Confirm Password incorrect')
-  } else {
-    addUserAndSendVerificationCode(JSON.stringify(userData))
+/**
+ * @param {string} [psw='']
+ * @return {boolean}
+ */
+const isPasswordNotValid = (psw = '') => {
+  const checkStr = '1234567890QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm'
+  const isIncludesUpperLowerNum = () => {
+    for (const c of checkStr) {
+      if (!psw.includes(c)) {
+        return false
+      }
+    }
+    return true
   }
-})
 
-Bootstrap5ShowPassword(document.querySelector('#showPsw'), '#password')
-Bootstrap5ShowPassword(document.querySelector('#showConfirmPsw'), '#confirmpw')
+  return psw.length < 8 || isIncludesUpperLowerNum()
+}
+
+const psw = document.querySelector('#password')
+psw.oninput = () => {
+  psw.classList.toggle('is-invalid', isPasswordNotValid(psw.value))
+}
+
+const confirmedPsw = document.querySelector('#confirmpw')
+confirmedPsw.oninput = () => {
+  confirmedPsw.classList.toggle('is-invalid', isPasswordNotConfirmed(psw.value, confirmedPsw.value))
+}
 
 /**
  * @param {string} [value='']
@@ -62,3 +72,23 @@ const email = document.querySelector('#email')
 email.oninput = () => {
   email.classList.toggle('is-invalid', isEmailNotVaild(email.value))
 }
+
+document.querySelector('#registerForm').addEventListener('submit', function (e) {
+  e.preventDefault()
+
+  const formData = new FormData(e.target)
+  const userData = Object.fromEntries(formData)
+
+  if (
+    isPasswordNotConfirmed(userData.Password, userData.ConfirmPw) ||
+  isEmailNotVaild(userData.Email) ||
+  isPasswordNotValid(userData.Password)
+  ) {
+    alert('Please complete the register form')
+  } else {
+    addUserAndSendVerificationCode(JSON.stringify(userData))
+  }
+})
+
+Bootstrap5ShowPassword(document.querySelector('#showPsw'), '#password')
+Bootstrap5ShowPassword(document.querySelector('#showConfirmPsw'), '#confirmpw')
