@@ -31,5 +31,4 @@ document.querySelector('#loginForm').addEventListener('submit', function (e) {
     })
 })
 
-const showPsw = document.querySelector('#showPsw')
-showPsw.onclick = () => Bootstrap5ShowPassword(showPsw, '#password')
+Bootstrap5ShowPassword(document.querySelector('#showPsw'), '#password')

@@ -7,6 +7,7 @@
     <div class="form-floating mb-4">
         <input type="text" id="email" name="Email" class="form-control" />
         <label class="form-label" for="email">Email address</label>
+        <div class="invalid-feedback"> Invalid email address</div>
     </div>
     <hr>
     <div class="input-group mb-3">
@@ -33,7 +34,6 @@
     <div class="text-center">
         <button type="submit" id="submit" class="btn btn-primary btn-block mb-4" id="submit">Register<i class="bi bi-pen-fill"></i>
         </button>
-        <div id="wait" hidden>Verifying email address...<i class="bi bi-hourglass-split"></i></div>
     </div>
 </form>
 <script type="module" src="/static/view/register/register_form.js"></script>

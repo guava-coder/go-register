@@ -8,7 +8,11 @@
  * @param {showPsw=Element}
  * @param {string} [input='']
  */
-export default function Bootstrap5ShowPassword (showPsw = Element, input = '') {
+export default function Bootstrap5ShowPassword (showPswBtn = Element, inputSelector = '') {
+  showPswBtn.addEventListener('click', (e) => handlePasswordVisibility(e.target, inputSelector))
+}
+
+function handlePasswordVisibility (showPsw = Element, input = '') {
   const password = document.querySelector(input)
   const classes = showPsw.classList
   const ishow = 'bi-eye-fill'
@@ -23,6 +27,7 @@ export default function Bootstrap5ShowPassword (showPsw = Element, input = '') {
     classes.add(ihide)
     password.type = 'password'
   }
+
   if (classes.contains(ishow)) {
     hidePassword()
   } else if (classes.contains(ihide)) {
