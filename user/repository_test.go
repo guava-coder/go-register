@@ -3,6 +3,7 @@ package user
 import (
 	"testing"
 
+	"golang.org/x/crypto/bcrypt"
 	. "goregister.com/app/auth"
 	. "goregister.com/app/data"
 	. "goregister.com/app/db"
@@ -109,6 +110,28 @@ func TestCheckAuth(t *testing.T) {
 			t.Log(res)
 		} else {
 			t.Fatal("Auth incorrect")
+		}
+	})
+}
+
+func TestUpdatePassword(t *testing.T) {
+	runRepoOperation(func(ur UserRepository) {
+		user := User{
+			Id:       "a01",
+			Password: "asd123",
+		}
+		old := ur.QueryById(user.Id)
+		psw, err := bcrypt.GenerateFromPassword([]byte(user.Password), 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		user.Password = string(psw)
+		res := ur.UpdatePassword(user)
+		if res.Id == "" {
+			t.Fatal()
+		} else {
+			t.Log("old: ", old)
+			t.Log("new: ", res)
 		}
 	})
 }

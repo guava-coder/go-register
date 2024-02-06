@@ -57,6 +57,14 @@ func (repo UserRepository) UpdateUserInfo(user User) User {
 	return repo.DB[user.Id]
 }
 
+func (repo UserRepository) UpdatePassword(user User) User {
+	temp := repo.DB[user.Id]
+	temp.Password = user.Password
+	repo.DB[user.Id] = temp
+
+	return repo.DB[user.Id]
+}
+
 func (repo UserRepository) DeleteUser(id string) map[string]User {
 	delete(repo.DB, id)
 	return repo.DB
