@@ -67,13 +67,14 @@ func (serv JwtService) Login(ctx *gin.Context) {
 				"Response": "Please input email and password",
 			})
 		})
-		if err != nil {
+		if err == nil {
+			if user.Auth != "" {
+				checkUserAuthorized(user)
+			}
+		} else {
 			ctx.JSON(http.StatusForbidden, gin.H{
 				"Response": "Password incorrect",
 			})
-		}
-		if user.Auth != "" {
-			checkUserAuthorized(user)
 		}
 	}
 	serv.readAndHandleRequestBody(ctx, getToken)

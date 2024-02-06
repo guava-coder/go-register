@@ -46,5 +46,8 @@ func (ctr UserController) UpdateUserAuth() {
 }
 
 func (ctr UserController) UpdatePassword() {
-	ctr.group.PUT("password/", ctr.service.UpdatePassword)
+	ctr.group.PUT("password/", func(ctx *gin.Context) {
+		verifier := NewBearerVerfier(ctr.service.UserAuth, ctx)
+		verifier.ExtractUserIdFromBearer(ctr.service.UpdatePassword)
+	})
 }

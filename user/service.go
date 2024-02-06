@@ -120,26 +120,40 @@ func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 	serv.readAndHandleRequestBody(ctx, handleUpdate)
 }
 
-func (serv UserService) UpdatePassword(ctx *gin.Context) {
-	serv.readAndHandleRequestBody(ctx, func(u User) {
-		psw, err := bcrypt.GenerateFromPassword([]byte(u.Password), 0)
+func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
+	handleUpdateRes := func(user User) {
+		res := serv.repo.UpdatePassword(user)
+		if res.Id == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": "Password update failed",
+			})
+		} else {
+			ctx.JSON(http.StatusOK, gin.H{
+				"Response": "User Password updated",
+			})
+		}
+	}
+
+	hashPassword := func(password string, user User) {
+		psw, err := bcrypt.GenerateFromPassword([]byte(password), 0)
 		if err == nil {
-			u.Password = string(psw)
-			res := serv.repo.UpdatePassword(u)
-			if res.Id == "" {
-				ctx.JSON(http.StatusBadRequest, gin.H{
-					"Response": "User not found",
-				})
-			} else {
-				ctx.JSON(http.StatusOK, gin.H{
-					"Response": "User Password updated",
-				})
-			}
+			user.Password = string(psw)
+			handleUpdateRes(user)
 		} else {
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"Response": "System error. " + err.Error(),
 			})
 		}
+	}
 
+	serv.readAndHandleRequestBody(ctx, func(u User) {
+		tempUser := serv.repo.QueryById(id)
+		if tempUser.Id == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": "User not found",
+			})
+		} else {
+			hashPassword(u.Password, tempUser)
+		}
 	})
 }
