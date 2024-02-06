@@ -24,6 +24,7 @@ func (ctr UserController) Run() {
 
 	ctr.AddUser()
 	ctr.UpdateUserAuth()
+	ctr.UpdatePassword()
 }
 
 func (ctr UserController) AddUser() {
@@ -42,4 +43,8 @@ func (ctr UserController) QueryById() {
 
 func (ctr UserController) UpdateUserAuth() {
 	ctr.group.PUT("auth/", ctr.service.UpdateUserAuth)
+}
+
+func (ctr UserController) UpdatePassword() {
+	ctr.group.PUT("password/", ctr.service.UpdatePassword)
 }

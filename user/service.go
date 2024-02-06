@@ -119,3 +119,27 @@ func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 	}
 	serv.readAndHandleRequestBody(ctx, handleUpdate)
 }
+
+func (serv UserService) UpdatePassword(ctx *gin.Context) {
+	serv.readAndHandleRequestBody(ctx, func(u User) {
+		psw, err := bcrypt.GenerateFromPassword([]byte(u.Password), 0)
+		if err == nil {
+			u.Password = string(psw)
+			res := serv.repo.UpdatePassword(u)
+			if res.Id == "" {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"Response": "User not found",
+				})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{
+					"Response": "User Password updated",
+				})
+			}
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"Response": "System error. " + err.Error(),
+			})
+		}
+
+	})
+}
