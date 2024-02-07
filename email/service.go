@@ -62,18 +62,27 @@ func RandStringBytes(length int) string {
 }
 
 func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
-	addFakeUserAuthAndSendMail := func(ctx *gin.Context, user User) {
-		foundU := serv.userRepo.QueryById(user.Id)
-		if foundU.Email == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "User not found.",
-			})
-		} else {
-			updatedU := serv.userRepo.UpdateUserAuth(User{
-				Id:   foundU.Id,
-				Auth: RandStringBytes(6),
-			})
+	addTempCodeAndSendMail := func(id string) {
+		updatedU, err := serv.userRepo.UpdateTempCode(User{
+			Id:       id,
+			TempCode: RandStringBytes(6),
+		})
+		if err == nil {
 			serv.sendVerificationMail(updatedU, ctx)
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"Response": "System failed to generate temporary code",
+			})
+		}
+	}
+	addFakeUserAuthAndSendMail := func(ctx *gin.Context, user User) {
+		foundU, err := serv.userRepo.QueryById(user.Id)
+		if err == nil {
+			addTempCodeAndSendMail(foundU.Id)
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": err.Error(),
+			})
 		}
 	}
 

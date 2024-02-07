@@ -11,4 +11,5 @@ type User struct {
 	Bio      string
 	Password string
 	Auth     string
+	TempCode string
 }

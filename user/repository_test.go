@@ -17,11 +17,11 @@ func runRepoOperation(operation func(UserRepository)) {
 
 func TestQueryById(t *testing.T) {
 	runRepoOperation(func(ur UserRepository) {
-		user := ur.QueryById("a03")
-		if user.Id == "" {
-			t.Fatal("User not found.")
-		} else {
+		user, err := ur.QueryById("a03")
+		if err == nil {
 			t.Log(user)
+		} else {
+			t.Fatal("User not found.")
 		}
 	})
 }
@@ -48,7 +48,10 @@ func TestAddUser(t *testing.T) {
 
 func TestUpdateUserInfo(t *testing.T) {
 	runRepoOperation(func(ur UserRepository) {
-		old := ur.QueryById("a01")
+		old, err := ur.QueryById("a01")
+		if err != nil {
+			t.Fatal(err)
+		}
 		user := old
 		user.Bio = "Fake User"
 		user.Auth = "6666"
@@ -66,12 +69,11 @@ func TestUpdateUserInfo(t *testing.T) {
 func TestDeleteUser(t *testing.T) {
 	runRepoOperation(func(ur UserRepository) {
 		id := "a01"
-		oldCount := len(ur.DB)
-		db := ur.DeleteUser(id)
-		if oldCount > len(db) {
+		err := ur.DeleteUser(id)
+		if err == nil {
 			t.Log("Delete successful")
 		} else {
-			t.Fatal()
+			t.Fatal(err)
 		}
 	})
 }
@@ -83,7 +85,10 @@ func TestUpdateUserAuth(t *testing.T) {
 			Id:   "a01",
 			Auth: string(auth.MustGetHashAuth()),
 		}
-		res := ur.UpdateUserAuth(user)
+		res, err := ur.UpdateUserAuth(user)
+		if err != nil {
+			t.Fatal(err)
+		}
 		if res.Auth == "" {
 			t.Fatal()
 		} else {
@@ -92,25 +97,27 @@ func TestUpdateUserAuth(t *testing.T) {
 	})
 }
 
-func TestCheckAuth(t *testing.T) {
+func TestIsTempCodeCorrect(t *testing.T) {
 	runRepoOperation(func(ur UserRepository) {
-		fakeAuth := "ggg"
+		code := "ggg"
 		user := User{
-			Id:   "a02",
-			Auth: fakeAuth,
+			Id:       "a02",
+			TempCode: code,
 		}
-		res := ur.UpdateUserAuth(user)
-		if res.Name == "" {
-			t.Fatal("user not exist")
-		}
-		if ur.CheckAuth(User{
-			Id:   "a02",
-			Auth: "ggg",
-		}) {
-			t.Log(res)
+		res, err := ur.UpdateTempCode(user)
+		if err == nil {
+			if ur.isTempCodeCorrect(User{
+				Id:       "a02",
+				TempCode: "ggg",
+			}) {
+				t.Log(res)
+			} else {
+				t.Fatal("Auth incorrect")
+			}
 		} else {
-			t.Fatal("Auth incorrect")
+			t.Fatal(err)
 		}
+
 	})
 }
 
@@ -120,7 +127,10 @@ func TestUpdatePassword(t *testing.T) {
 			Id:       "a01",
 			Password: "asd123",
 		}
-		old := ur.QueryById(user.Id)
+		old, err := ur.QueryById(user.Id)
+		if err != nil {
+			t.Fatal(err)
+		}
 		psw, err := bcrypt.GenerateFromPassword([]byte(user.Password), 0)
 		if err != nil {
 			t.Fatal(err)
@@ -132,6 +142,21 @@ func TestUpdatePassword(t *testing.T) {
 		} else {
 			t.Log("old: ", old)
 			t.Log("new: ", res)
+		}
+	})
+}
+
+func TestUpdateTempCode(t *testing.T) {
+	runRepoOperation(func(ur UserRepository) {
+		user := User{
+			Id:       "a02",
+			TempCode: "TEST123",
+		}
+		res, err := ur.UpdateTempCode(user)
+		if err == nil {
+			t.Log(res)
+		} else {
+			t.Fatal()
 		}
 	})
 }

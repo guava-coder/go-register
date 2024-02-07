@@ -16,6 +16,7 @@ func DBInit() map[string]User {
 			Bio:      "Default User",
 			Password: "123",
 			Auth:     "$2a$10$GevpiE/I67cDSbfpyRaqv.sEvJa.dYVnnvYjymTMdY2gQ66XLyW.O",
+			TempCode: "none",
 		},
 		{
 			Id:       "a02",
@@ -24,6 +25,7 @@ func DBInit() map[string]User {
 			Bio:      "Default User",
 			Password: "123",
 			Auth:     "none",
+			TempCode: "none",
 		},
 	}
 

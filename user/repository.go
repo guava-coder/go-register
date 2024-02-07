@@ -1,8 +1,20 @@
 package user
 
 import (
+	"errors"
+
 	. "goregister.com/app/data"
 )
+
+type UserError struct {
+	NotFound error
+}
+
+func NewUserError() UserError {
+	return UserError{
+		NotFound: errors.New("User not found"),
+	}
+}
 
 type UserRepository struct {
 	DB map[string]User
@@ -14,8 +26,12 @@ func NewUserRepository(db map[string]User) UserRepository {
 	}
 }
 
-func (repo UserRepository) QueryById(id string) User {
-	return repo.DB[id]
+func (repo UserRepository) QueryById(id string) (User, error) {
+	if repo.DB[id].Id == "" {
+		return repo.DB[id], NewUserError().NotFound
+	} else {
+		return repo.DB[id], nil
+	}
 }
 
 func (repo UserRepository) QueryByInfo(user User) User {
@@ -33,9 +49,15 @@ func (repo UserRepository) QueryByInfo(user User) User {
 	return target
 }
 
-func (repo UserRepository) CheckAuth(user User) bool {
-	v := repo.QueryById(user.Id)
-	if v.Auth == user.Auth {
+func (repo UserRepository) isTempCodeCorrect(user User) bool {
+	v, err := repo.QueryById(user.Id)
+	if err != nil {
+		return false
+	}
+	if v.TempCode == user.TempCode {
+		temp := repo.DB[user.Id]
+		temp.TempCode = ""
+		repo.DB[user.Id] = temp
 		return true
 	} else {
 		return false
@@ -65,16 +87,39 @@ func (repo UserRepository) UpdatePassword(user User) User {
 	return repo.DB[user.Id]
 }
 
-func (repo UserRepository) DeleteUser(id string) map[string]User {
-	delete(repo.DB, id)
-	return repo.DB
+func (repo UserRepository) DeleteUser(id string) error {
+	if repo.DB[id].Id == "" {
+		return NewUserError().NotFound
+	} else {
+		delete(repo.DB, id)
+		return nil
+	}
 }
 
-func (repo UserRepository) UpdateUserAuth(user User) User {
-	temp := repo.DB[user.Id]
-	temp.Auth = user.Auth
-	repo.DB[user.Id] = temp
-	return repo.DB[user.Id]
+func (repo UserRepository) UpdateTempCode(user User) (User, error) {
+	if user.TempCode == "" {
+		return repo.DB[user.Id], errors.New("No TempCode")
+	} else {
+		temp := repo.DB[user.Id]
+		temp.TempCode = user.TempCode
+		repo.DB[user.Id] = temp
+		return repo.DB[user.Id], nil
+	}
+}
+
+func (repo UserRepository) UpdateUserAuth(user User) (User, error) {
+	if user.Auth == "" {
+		return repo.DB[user.Id], errors.New("No Auth")
+	} else {
+		if repo.DB[user.Id].Id == "" {
+			return repo.DB[user.Id], NewUserError().NotFound
+		} else {
+			temp := repo.DB[user.Id]
+			temp.Auth = user.Auth
+			repo.DB[user.Id] = temp
+			return repo.DB[user.Id], nil
+		}
+	}
 }
 
 func (repo UserRepository) IsUserExist(input User) (User, bool) {

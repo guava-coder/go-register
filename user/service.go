@@ -28,17 +28,17 @@ func (serv UserService) readAndHandleRequestBody(ctx *gin.Context, op func(User)
 }
 
 func (serv UserService) QueryById(ctx *gin.Context, id string) {
-	res := serv.repo.QueryById(id)
-	if res.Id == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"Response": "User not found",
-		})
-	} else {
+	res, err := serv.repo.QueryById(id)
+	if err == nil {
 		res.Password = ""
 		res.Auth = ""
 		ctx.JSON(http.StatusOK, gin.H{
 			"Response": "Found User",
 			"User":     res,
+		})
+	} else {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"Response": "User not found",
 		})
 	}
 }
@@ -95,20 +95,20 @@ func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 			Id:   id,
 			Auth: string(serv.UserAuth.MustGetHashAuth()),
 		}
-		res := serv.repo.UpdateUserAuth(usrWithAuth)
-		if res.Auth == "" {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"Response": "System failed to generate auth, please try again later",
-			})
-		} else {
+		_, err := serv.repo.UpdateUserAuth(usrWithAuth)
+		if err == nil {
 			ctx.JSON(http.StatusOK, gin.H{
 				"Response": "User Auth update successful",
+			})
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"Response": "System failed to generate auth, please try again later",
 			})
 		}
 	}
 
 	handleUpdate := func(usr User) {
-		if serv.repo.CheckAuth(usr) {
+		if serv.repo.isTempCodeCorrect(usr) {
 			changeUserAuthToReal(usr.Id)
 		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -147,13 +147,13 @@ func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
 	}
 
 	serv.readAndHandleRequestBody(ctx, func(u User) {
-		tempUser := serv.repo.QueryById(id)
-		if tempUser.Id == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "User not found",
-			})
-		} else {
+		tempUser, err := serv.repo.QueryById(id)
+		if err == nil {
 			hashPassword(u.Password, tempUser)
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": err.Error(),
+			})
 		}
 	})
 }
