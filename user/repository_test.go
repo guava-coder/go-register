@@ -26,6 +26,19 @@ func TestQueryById(t *testing.T) {
 	})
 }
 
+func TestQueryByInfo(t *testing.T) {
+	runRepoOperation(func(ur UserRepository) {
+		res, err := ur.QueryByInfo(User{
+			Email: "mark@mail.com",
+		})
+		if err == nil {
+			t.Log(res)
+		} else {
+			t.Fatal(err)
+		}
+	})
+}
+
 func TestAddUser(t *testing.T) {
 	runRepoOperation(func(ur UserRepository) {
 		user := User{

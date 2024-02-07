@@ -28,8 +28,8 @@ func (serv JwtService) readAndHandleRequestBody(ctx *gin.Context, op func(User))
 }
 
 func (serv JwtService) CheckUserPassword(input User, handleBadRequest func(statusCode int)) (User, error) {
-	user, exist := serv.userRepo.IsUserExist(input)
-	if exist && input.Password != "" {
+	user, err := serv.userRepo.QueryByInfo(input)
+	if err == nil {
 		return user, bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
 	} else {
 		handleBadRequest(http.StatusBadRequest)

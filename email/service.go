@@ -75,10 +75,16 @@ func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
 			})
 		}
 	}
-	addFakeUserAuthAndSendMail := func(ctx *gin.Context, user User) {
+	SendMailToUser := func(ctx *gin.Context, user User) {
 		foundU, err := serv.userRepo.QueryById(user.Id)
 		if err == nil {
-			addTempCodeAndSendMail(foundU.Id)
+			if foundU.Email == user.Email {
+				addTempCodeAndSendMail(foundU.Id)
+			} else {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"Response": "User email address invalid",
+				})
+			}
 		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"Response": err.Error(),
@@ -87,7 +93,7 @@ func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
 	}
 
 	var handler EmailHandler
-	handler.VerifyUserEmail(ctx, addFakeUserAuthAndSendMail)
+	handler.VerifyUserEmail(ctx, SendMailToUser)
 }
 
 func (serv EmailService) VerifyEmail(ctx *gin.Context) {

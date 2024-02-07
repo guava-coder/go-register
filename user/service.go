@@ -68,9 +68,13 @@ func (serv UserService) AddUser(ctx *gin.Context, user User) {
 	}
 
 	hashUserPasswordAndInsert := func(us User) {
-		user := serv.repo.QueryByInfo(us)
+		_, err := serv.repo.QueryByInfo(us)
 
-		if user.Id == "" {
+		if err == nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": "User already exist",
+			})
+		} else {
 			psw, err := bcrypt.GenerateFromPassword([]byte(us.Password), 0)
 			if err == nil {
 				handleAddUser(us, string(psw))
@@ -79,10 +83,6 @@ func (serv UserService) AddUser(ctx *gin.Context, user User) {
 					"Response": "System error, please try again later. ERROR: " + err.Error(),
 				})
 			}
-		} else {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "User already exist",
-			})
 		}
 	}
 

@@ -34,19 +34,17 @@ func (repo UserRepository) QueryById(id string) (User, error) {
 	}
 }
 
-func (repo UserRepository) QueryByInfo(user User) User {
+func (repo UserRepository) QueryByInfo(user User) (User, error) {
 	users := make([]User, 0, len(repo.DB))
 	for _, v := range repo.DB {
 		users = append(users, v)
 	}
-	var target User
 	for _, v := range users {
 		if v.Name == user.Name || v.Email == user.Email {
-			target = v
-			break
+			return v, nil
 		}
 	}
-	return target
+	return User{}, NewUserError().NotFound
 }
 
 func (repo UserRepository) isTempCodeCorrect(user User) bool {
@@ -120,9 +118,4 @@ func (repo UserRepository) UpdateUserAuth(user User) (User, error) {
 			return repo.DB[user.Id], nil
 		}
 	}
-}
-
-func (repo UserRepository) IsUserExist(input User) (User, bool) {
-	user := repo.QueryByInfo(input)
-	return user, (user.Id != "")
 }
