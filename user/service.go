@@ -157,18 +157,3 @@ func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
 		}
 	})
 }
-
-func (serv UserService) GetUserIdByEmail(ctx *gin.Context) {
-	serv.readAndHandleRequestBody(ctx, func(u User) {
-		res, err := serv.repo.QueryByInfo(u)
-		if err == nil {
-			ctx.JSON(http.StatusOK, gin.H{
-				"Id": res.Id,
-			})
-		} else {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": err.Error(),
-			})
-		}
-	})
-}
