@@ -23,7 +23,7 @@ func NewEmailService(userRepo UserRepository, m MailSender) EmailService {
 }
 
 func getVerificationMailForm(receiver User) Email {
-	code := receiver.Auth
+	code := receiver.TempCode
 	body := fmt.Sprintf(`
 				<h3>Go-Register email verification</h3>
 				<p>Using the code below to verify your email. 
