@@ -15,5 +15,5 @@ func TestGetVerificationMailForm(t *testing.T) {
 }
 
 func TestRandStringBytes(t *testing.T) {
-	t.Log(RandStringBytes(6))
+	t.Log(string(RandStringBytes(4, "1234567890")))
 }

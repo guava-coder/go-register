@@ -21,6 +21,7 @@ func NewUserController(service UserService, router *gin.Engine) UserController {
 
 func (ctr UserController) Run() {
 	ctr.QueryById()
+	ctr.GetUserIdByEmail()
 
 	ctr.AddUser()
 	ctr.UpdateUserAuth()
@@ -50,4 +51,8 @@ func (ctr UserController) UpdatePassword() {
 		verifier := NewBearerVerfier(ctr.service.UserAuth, ctx)
 		verifier.ExtractUserIdFromBearer(ctr.service.UpdatePassword)
 	})
+}
+
+func (ctr UserController) GetUserIdByEmail() {
+	ctr.group.POST("query/email/", ctr.service.GetUserIdByEmail)
 }

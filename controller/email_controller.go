@@ -20,15 +20,20 @@ func NewEmailController(service EmailService, router *gin.Engine) EmailControlle
 func (ctr EmailController) Run() {
 	ctr.SendVerificationEmail()
 	ctr.VerifyEmail()
+	ctr.SendTemporaryPassword()
 }
 
 func (ctr EmailController) SendVerificationEmail() {
 	ctr.group.POST(
-		"/send",
+		"/send/verification",
 		ctr.service.SendVerificationEmail,
 	)
 }
 
 func (ctr EmailController) VerifyEmail() {
 	ctr.group.POST("/verify", ctr.service.VerifyEmail)
+}
+
+func (ctr EmailController) SendTemporaryPassword() {
+	ctr.group.POST("/send/password", ctr.service.SendTemporaryPassword)
 }

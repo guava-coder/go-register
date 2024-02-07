@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	. "goregister.com/app/data"
 	. "goregister.com/app/user"
 )
@@ -46,26 +47,30 @@ func (serv EmailService) sendVerificationMail(receiver User, ctx *gin.Context) {
 			"Response": "A verification mail has sended, please check your email and verify it.",
 		})
 	} else {
-		ctx.JSON(http.StatusBadRequest, gin.H{
+		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"Response": "Sending a verification mail failed, please try again.",
 		})
 	}
 }
 
-func RandStringBytes(length int) string {
-	const letterBytes = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+const (
+	UpperCaseNums = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	EngCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZqwertyuiopasdfghjklzxcvbnm0123456789"
+)
+
+func RandStringBytes(length int, sample string) []byte {
 	b := make([]byte, length)
 	for i := range b {
-		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+		b[i] = sample[rand.Intn(len(sample))]
 	}
-	return string(b)
+	return b
 }
 
 func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
 	addTempCodeAndSendMail := func(id string) {
 		updatedU, err := serv.userRepo.UpdateTempCode(User{
 			Id:       id,
-			TempCode: RandStringBytes(6),
+			TempCode: string(RandStringBytes(6, UpperCaseNums)),
 		})
 		if err == nil {
 			serv.sendVerificationMail(updatedU, ctx)
@@ -105,4 +110,61 @@ func (serv EmailService) VerifyEmail(ctx *gin.Context) {
 			})
 		},
 	)
+}
+
+func NewPasswordMail(receiver string, password string) Email {
+	body := fmt.Sprintf(`
+				<h3>Go-Register Recover password</h3>
+				<p>We send you a new password, use it to login. 
+				Don't reply this email.</p>
+				<h1> %v </h1>
+			`, password)
+	form := Email{
+		Subject:  "Go-Register Recover Password",
+		HTMLBody: body,
+	}
+
+	form.Receiver = receiver
+	return form
+}
+
+func (serv EmailService) SendTemporaryPassword(ctx *gin.Context) {
+	sendMailToUser := func(u User, password string) {
+		err := serv.mailSender.SendMail(NewPasswordMail(u.Email, password))
+		if err == nil {
+			ctx.JSON(http.StatusOK, gin.H{
+				"Response": "We sended a new password for you, please check your email and use it to login.",
+			})
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"Response": "Sending mail failed, please try again.",
+			})
+		}
+	}
+
+	checkTempCode := func(ctx *gin.Context, u User) {
+		if serv.userRepo.IsTempCodeCorrect(u) {
+			unhash := RandStringBytes(8, EngCharacters)
+
+			newpsw, err := bcrypt.GenerateFromPassword(unhash, 0)
+			u.Password = string(newpsw)
+
+			res, err := serv.userRepo.UpdatePassword(u)
+
+			if err == nil {
+				sendMailToUser(res, string(unhash))
+			} else {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"Response": err.Error(),
+				})
+			}
+		} else {
+			ctx.JSON(http.StatusForbidden, gin.H{
+				"Response": "code incorrect",
+			})
+		}
+	}
+
+	var handler EmailHandler
+	handler.VerifyUserEmail(ctx, checkTempCode)
 }

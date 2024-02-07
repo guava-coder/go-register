@@ -47,12 +47,12 @@ func (repo UserRepository) QueryByInfo(user User) (User, error) {
 	return User{}, NewUserError().NotFound
 }
 
-func (repo UserRepository) isTempCodeCorrect(user User) bool {
+func (repo UserRepository) IsTempCodeCorrect(user User) bool {
 	v, err := repo.QueryById(user.Id)
 	if err != nil {
 		return false
 	}
-	if v.TempCode == user.TempCode {
+	if v.TempCode == user.TempCode && len(user.TempCode) >= 6 {
 		temp := repo.DB[user.Id]
 		temp.TempCode = ""
 		repo.DB[user.Id] = temp
@@ -77,12 +77,17 @@ func (repo UserRepository) UpdateUserInfo(user User) User {
 	return repo.DB[user.Id]
 }
 
-func (repo UserRepository) UpdatePassword(user User) User {
-	temp := repo.DB[user.Id]
-	temp.Password = user.Password
-	repo.DB[user.Id] = temp
+func (repo UserRepository) UpdatePassword(user User) (User, error) {
+	if repo.DB[user.Id].Id == "" {
+		return User{}, NewUserError().NotFound
+	} else {
+		temp := repo.DB[user.Id]
+		temp.Password = user.Password
+		repo.DB[user.Id] = temp
 
-	return repo.DB[user.Id]
+		return repo.DB[user.Id], nil
+	}
+
 }
 
 func (repo UserRepository) DeleteUser(id string) error {

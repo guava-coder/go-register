@@ -119,7 +119,7 @@ func TestIsTempCodeCorrect(t *testing.T) {
 		}
 		res, err := ur.UpdateTempCode(user)
 		if err == nil {
-			if ur.isTempCodeCorrect(User{
+			if ur.IsTempCodeCorrect(User{
 				Id:       "a02",
 				TempCode: "ggg",
 			}) {
@@ -149,12 +149,12 @@ func TestUpdatePassword(t *testing.T) {
 			t.Fatal(err)
 		}
 		user.Password = string(psw)
-		res := ur.UpdatePassword(user)
-		if res.Id == "" {
-			t.Fatal()
-		} else {
+		res, err := ur.UpdatePassword(user)
+		if err == nil {
 			t.Log("old: ", old)
 			t.Log("new: ", res)
+		} else {
+			t.Fatal()
 		}
 	})
 }

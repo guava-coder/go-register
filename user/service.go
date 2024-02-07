@@ -108,7 +108,7 @@ func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 	}
 
 	handleUpdate := func(usr User) {
-		if serv.repo.isTempCodeCorrect(usr) {
+		if serv.repo.IsTempCodeCorrect(usr) {
 			changeUserAuthToReal(usr.Id)
 		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -122,14 +122,14 @@ func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 
 func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
 	handleUpdateRes := func(user User) {
-		res := serv.repo.UpdatePassword(user)
-		if res.Id == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "Password update failed",
-			})
-		} else {
+		_, err := serv.repo.UpdatePassword(user)
+		if err == nil {
 			ctx.JSON(http.StatusOK, gin.H{
 				"Response": "User Password updated",
+			})
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": "Password update failed",
 			})
 		}
 	}
@@ -150,6 +150,21 @@ func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
 		tempUser, err := serv.repo.QueryById(id)
 		if err == nil {
 			hashPassword(u.Password, tempUser)
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": err.Error(),
+			})
+		}
+	})
+}
+
+func (serv UserService) GetUserIdByEmail(ctx *gin.Context) {
+	serv.readAndHandleRequestBody(ctx, func(u User) {
+		res, err := serv.repo.QueryByInfo(u)
+		if err == nil {
+			ctx.JSON(http.StatusOK, gin.H{
+				"Id": res.Id,
+			})
 		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"Response": err.Error(),
