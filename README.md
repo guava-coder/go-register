@@ -86,7 +86,7 @@ If you are...
         <td>X</td>
     </tr> 
     <tr>
-        <td>Restore Password</td>
+        <td>Recover Password</td>
         <td>X</td>
         <td>V</td>
     </tr> 
@@ -111,8 +111,6 @@ If you are...
  * [jwt-go](https://github.com/golang-jwt/jwt)
 
  * [google/uuid](https://github.com/google/uuid)
-
- * [Go Cryptography](https://pkg.go.dev/golang.org/x/crypto#section-readme)
 
  ### Frontend
 
