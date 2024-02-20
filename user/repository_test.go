@@ -68,13 +68,13 @@ func TestUpdateUserInfo(t *testing.T) {
 		user := old
 		user.Bio = "Fake User"
 		user.Auth = "6666"
-		res := ur.UpdateUserInfo(user)
+		res, err := ur.UpdateUserInfo(user)
 
-		if res.Id == "" {
-			t.Fatal("Update failed")
-		} else {
+		if err == nil {
 			t.Log("old user: ", old)
 			t.Log("new user: ", res)
+		} else {
+			t.Fatal("Update failed")
 		}
 	})
 }

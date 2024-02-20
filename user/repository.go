@@ -67,14 +67,18 @@ func (repo UserRepository) AddUser(user User) User {
 	return repo.DB[user.Id]
 }
 
-func (repo UserRepository) UpdateUserInfo(user User) User {
-	temp := repo.DB[user.Id]
-	temp.Name = user.Name
-	temp.Bio = user.Bio
+func (repo UserRepository) UpdateUserInfo(user User) (User, error) {
+	if repo.DB[user.Id].Id == "" {
+		return User{}, NewUserError().NotFound
+	} else {
+		temp := repo.DB[user.Id]
+		temp.Name = user.Name
+		temp.Bio = user.Bio
 
-	repo.DB[user.Id] = temp
+		repo.DB[user.Id] = temp
 
-	return repo.DB[user.Id]
+		return repo.DB[user.Id], nil
+	}
 }
 
 func (repo UserRepository) UpdatePassword(user User) (User, error) {

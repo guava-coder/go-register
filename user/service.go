@@ -157,3 +157,20 @@ func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
 		}
 	})
 }
+
+func (serv UserService) UpdateUserInfo(ctx *gin.Context, id string) {
+	serv.readAndHandleRequestBody(ctx, func(u User) {
+		u.Id = id
+		res, err := serv.repo.UpdateUserInfo(u)
+		if err == nil {
+			ctx.JSON(http.StatusOK, gin.H{
+				"Response": "Update successful",
+				"User":     res,
+			})
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"Response": "Not a user",
+			})
+		}
+	})
+}

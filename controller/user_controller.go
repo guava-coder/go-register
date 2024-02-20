@@ -24,6 +24,7 @@ func (ctr UserController) Run() {
 	ctr.QueryById()
 	ctr.UpdateUserAuth()
 	ctr.UpdatePassword()
+	ctr.UpdateUserInfo()
 }
 
 func (ctr UserController) AddUser() {
@@ -48,5 +49,12 @@ func (ctr UserController) UpdatePassword() {
 	ctr.group.PUT("password/", func(ctx *gin.Context) {
 		verifier := NewBearerVerfier(ctr.service.UserAuth, ctx)
 		verifier.ExtractUserIdFromBearer(ctr.service.UpdatePassword)
+	})
+}
+
+func (ctr UserController) UpdateUserInfo() {
+	ctr.group.POST("update/", func(ctx *gin.Context) {
+		verifier := NewBearerVerfier(ctr.service.UserAuth, ctx)
+		verifier.ExtractUserIdFromBearer(ctr.service.UpdateUserInfo)
 	})
 }
