@@ -2,7 +2,6 @@ import UserController from '../../js/controller/user_controller.js'
 
 /**
  *
- *
  * @return {{
  * Name:Element,
  * Email:Element,
@@ -18,7 +17,6 @@ const BasicInfoInputs = () => {
 }
 
 /**
- *
  *
  * @return {{
  * get:object,
@@ -37,32 +35,18 @@ UserController().findUserData()
   .catch(err => console.log(err))
   .then(data => {
     const user = data.User
-    Userdata().set(JSON.stringify(user))
+    Userdata().set(JSON.stringify())
+
     const inputs = BasicInfoInputs()
     for (const k of Object.keys(inputs)) {
       inputs[k].value = user[k]
     }
   })
 
-const updateZone = document.querySelector('#updateZone')
-const editMode = document.querySelector('#editMode')
-editMode.onclick = () => {
-  const inputs = BasicInfoInputs()
-  for (const k of Object.keys(inputs)) {
-    inputs[k].disabled = false
-  }
-  updateZone.hidden = false
-  editMode.hidden = true
-}
+document.querySelector('#userform').addEventListener('submit', function (e) {
+  e.preventDefault()
 
-const cancelBtn = document.querySelector('#cancel')
-cancelBtn.onclick = () => {
-  const inputs = BasicInfoInputs()
-  const user = Userdata().get()
-  for (const k of Object.keys(inputs)) {
-    inputs[k].value = user[k]
-    inputs[k].disabled = true
-  }
-  updateZone.hidden = true
-  editMode.hidden = false
-}
+  const formData = new FormData(e.target)
+  const userData = Object.fromEntries(formData)
+  console.log(userData)
+})
