@@ -14,18 +14,19 @@
 
 <body>
     <div id="app">
-        <div class="container" style="overflow-y: auto;">
-            <div class="text-center">
-                <div class="p-4 g-col-6"></div>
-                <h1>GoRegister</h1>
-                <div class="row mb-4"></div>
-                <h5>Register📃/Login✅</h5>
-                <h5>With Restiful APIs and JWT🔑</h5>
-                <div class="p-4 g-col-6"></div>
-                <div hx-get="/static/view/check/check_login.html" hx-trigger="load" hx-swap="innerHTML"></div>
-            </div>
-        </div>
+        <div hx-get="/static/view/main.html" hx-trigger="load" hx-swap="innerHTML"></div>
     </div>
+    <div id="sceneTemp" hidden></div>
+    <script>
+        const saveTemp = () => {
+            const sceneTemp = document.querySelector('#sceneTemp')
+            const view = document.querySelector('div[hx-get]').getAttribute('hx-get')
+            console.log(view)
+            sceneTemp.innerHTML = view
+        }
+        saveTemp()
+        //window.onclick = e => saveTemp()
+    </script>
 </body>
 
 </html>
