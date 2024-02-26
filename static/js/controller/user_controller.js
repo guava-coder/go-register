@@ -9,8 +9,9 @@ import HttpStatusHandler from '../request/http_status_handler.js'
  * @export
  * @return {{
  * findUserData:()=>{},
- * addUser:(bodyStr='')=>{}
- * updateUserAuth: (bodyStr = '') =>{}
+ * addUser:(bodyStr='')=>{},
+ * updateUserAuth: (bodyStr = '') =>{},
+ * updateUserInfo: (bodyStr='')=>{}
  * }}
  */
 export default function UserController () {
@@ -37,6 +38,12 @@ export default function UserController () {
     return handler
   }
 
+  const updateInfoHandler = () => {
+    const handler = HttpStatusHandler()
+    handler.BadRequest = () => console.log('Not a user')
+    return handler
+  }
+
   return {
     findUserData: () =>
       serv.post({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler() }),
@@ -44,6 +51,8 @@ export default function UserController () {
       serv.post({ url: '/api/v1/user/add', bodyStr, statusHandler: addUserHandler() }),
     updateUserAuth: (bodyStr = '') =>
       serv.put({ url: '/api/v1/user/auth', bodyStr, statusHandler: updateAuthHandler() }),
+    updateUserInfo: (bodyStr = '') =>
+      serv.put({ url: '/api/v1/user/update', bodyStr, statusHandler: updateInfoHandler() })
   }
 }
 

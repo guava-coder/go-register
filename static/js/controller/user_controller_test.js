@@ -36,6 +36,17 @@ function UserControllerTest () {
           u.assertNotTrue(data === undefined)
           console.log(data)
         })
+    },
+    testUpdateUserInfo: (u = UnitTest()) => {
+      controller.updateUserInfo(`
+      {
+    "Name":"Markii",
+    "Bio":"Hi! I'm Mark."
+  }`).catch(err => console.log(err))
+        .then(data => {
+          u.assertNotTrue(data === undefined)
+          console.log(data)
+        })
     }
   }
 }
@@ -43,3 +54,4 @@ function UserControllerTest () {
 UserControllerTest().testFindUserData(UnitTest('testFindUserData'))
 UserControllerTest().testAddUser(UnitTest('testAddUser'))
 UserControllerTest().testUpdateUserAuth(UnitTest('testUpdateUserAuth'))
+UserControllerTest().testUpdateUserInfo(UnitTest('testUpdateUserInfo'))

@@ -53,7 +53,7 @@ func (ctr UserController) UpdatePassword() {
 }
 
 func (ctr UserController) UpdateUserInfo() {
-	ctr.group.POST("update/", func(ctx *gin.Context) {
+	ctr.group.PUT("update/", func(ctx *gin.Context) {
 		verifier := NewBearerVerfier(ctr.service.UserAuth, ctx)
 		verifier.ExtractUserIdFromBearer(ctr.service.UpdateUserInfo)
 	})
