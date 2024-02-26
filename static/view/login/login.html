@@ -1,5 +1,5 @@
 <div class="container" style="overflow-y: auto;">
-<button class="btn bi bi-arrow-left" id="returnBtn" style="font-size: 2em;" onclick="location.reload()"></button>
+    <div hx-get="/static/view/return/return_btn.html" hx-trigger="load" hx-swap="innerHTML"></div>
     <div hx-get="/static/view/login/login_form.html" hx-trigger="load" hx-swap="innerHTML"></div>
     <div class="row mb-4"></div>
     <div class="row mb-4">

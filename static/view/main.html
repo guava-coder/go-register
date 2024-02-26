@@ -6,6 +6,12 @@
         <h5>Register📃/Login✅</h5>
         <h5>With Restiful APIs and JWT🔑</h5>
         <div class="p-4 g-col-6"></div>
-        <div hx-get="/static/view/check/check_login.html" hx-trigger="load" hx-swap="innerHTML"></div>
+        <div hx-get="/static/view/check/check_login.html" id="checkLogin" hx-trigger="load" hx-swap="innerHTML"></div>
     </div>
 </div>
+
+<script>
+    document.querySelector('#checkLogin').addEventListener('htmx:afterSwap', e => {
+        console.log('hello')
+    })
+</script>

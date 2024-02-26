@@ -17,16 +17,7 @@
         <div hx-get="/static/view/main.html" hx-trigger="load" hx-swap="innerHTML"></div>
     </div>
     <div id="sceneTemp" hidden></div>
-    <script>
-        const saveTemp = () => {
-            const sceneTemp = document.querySelector('#sceneTemp')
-            const view = document.querySelector('div[hx-get]').getAttribute('hx-get')
-            console.log(view)
-            sceneTemp.innerHTML = view
-        }
-        saveTemp()
-        //window.onclick = e => saveTemp()
-    </script>
+    <script type="module" src="/static/index.js"></script>
 </body>
 
 </html>
