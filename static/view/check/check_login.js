@@ -1,8 +1,7 @@
 import UserController from '../../js/controller/user_controller.js'
 
-CheckLogin()
-
-function CheckLogin () {
+export default function CheckLogin () {
+  console.log('check login')
   const fetchHTMLPage = (url = '', handleData = () => {}) => {
     const content = document.querySelector('#content')
     fetch(url)

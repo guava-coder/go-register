@@ -16,8 +16,7 @@
     <div id="app">
         <div hx-get="/static/view/main.html" hx-trigger="load" hx-swap="innerHTML"></div>
     </div>
-    <div id="sceneTemp" hidden></div>
-    <script type="module" src="/static/index.js"></script>
+    <div hx-get="/static/widget/scene/scene_handler.html" hx-swap="innerHTML" hx-trigger="load"></div>
 </body>
 
 </html>
