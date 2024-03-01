@@ -4,8 +4,8 @@
         <input type="text" id="name" name="Name" class="form-control" />
         <label class="form-label" for="name">User name</label>
     </div>
-    <div hx-get="/static/template/email_and_password.html" hx-trigger="load" hx-swap="innerHTML"></div>
-    <div hx-get="/static/widget/inputs/confirm_password.html" hx-trigger="load" hx-swap="innerHTML"></div>
+    <div hx-get="/static/template/email_and_password.html" hx-trigger="load" hx-swap="outerHTML"></div>
+    <div hx-get="/static/widget/inputs/confirm_password.html" hx-trigger="load" hx-swap="outerHTML"></div>
     <div class="alert alert-warning alert-dismissible fade show" role="alert" hidden>
         <div id="alertText">Message</div>
         <button type="button" class="btn-close" onclick="document.querySelector('.alert').hidden=true"></button>

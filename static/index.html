@@ -4,19 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/dependencies/bootstrap/bootstrap.min.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/static/dependencies/bootstrap/bootstrap.min.css">
     <script src="/static/dependencies/bootstrap/bootstrap.bundle.min.js"></script>
-    <script src="/static/dependencies/htmx/htmx.min.js"></script>
+
     <script src="/static/dependencies/cookie/js.cookie.min.js"></script>
+    
+    <script src="/static/dependencies/htmx/htmx.min.js"></script>
+
     <title>GoRegister</title>
 </head>
 
 <body>
     <div id="app">
-        <div hx-get="/static/view/main.html" hx-trigger="load" hx-swap="innerHTML"></div>
+        <div hx-get="/static/view/main.html" hx-trigger="load" hx-swap="outerHTML"></div>
     </div>
-    <div hx-get="/static/widget/scene/scene_handler.html" hx-swap="innerHTML" hx-trigger="load"></div>
+    <div hx-get="/static/widget/scene/scene_handler.html" hx-swap="outerHTML" hx-trigger="load"></div>
 </body>
 
 </html>
