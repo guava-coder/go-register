@@ -1,5 +1,4 @@
 import JwtController from '../../js/controller/jwt_controller.js'
-import Bootstrap5ShowPassword from '../../js/util/bootstrap5_show_password.js'
 import GotoVerifyPage from '../verification/go_to_verify_page.js'
 import EmailController from '../../js/controller/email_controller.js'
 
@@ -30,5 +29,3 @@ document.querySelector('#loginForm').addEventListener('submit', function (e) {
       }
     })
 })
-
-Bootstrap5ShowPassword(document.querySelector('#showPsw'), '#password')
