@@ -5,16 +5,7 @@
         <label class="form-label" for="name">User name</label>
     </div>
     <div hx-get="/static/template/email_and_password.html" hx-trigger="load" hx-swap="innerHTML"></div>
-    <div class="input-group mb-3">
-        <div class="form-floating mb-4">
-            <input type="password" id="confirmpw" name="ConfirmPw" class="form-control"
-                aria-describedby="showConfirmPsw" />
-            <label class="form-label" for="confirmpw">Confirmed Password</label>
-            <div class="invalid-feedback">Password and confirmed password are different</div>
-        </div>
-        <span><button type="button" id="showConfirmPsw" class="btn bi bi-eye-slash-fill"
-                style="font-size: 2rem;"></button></span>
-    </div>
+    <div hx-get="/static/widget/inputs/confirm_password.html" hx-trigger="load" hx-swap="innerHTML"></div>
     <div class="alert alert-warning alert-dismissible fade show" role="alert" hidden>
         <div id="alertText">Message</div>
         <button type="button" class="btn-close" onclick="document.querySelector('.alert').hidden=true"></button>
