@@ -18,9 +18,9 @@
 
 <body>
     <div id="app">
-        <div hx-get="/static/view/main.html" hx-trigger="load" hx-swap="outerHTML"></div>
+        <div hx-get="/static/view/main.html" hx-trigger="load" hx-swap="innerHTML"></div>
     </div>
-    <div hx-get="/static/widget/scene/scene_handler.html" hx-swap="outerHTML" hx-trigger="load"></div>
+    <div hx-get="/static/widget/scene/scene_handler.html" hx-swap="innerHTML" hx-trigger="load"></div>
 </body>
 
 </html>

@@ -11,6 +11,13 @@
  */
 export default function Bootstrap5Validation () {
   return {
+    /**
+     * Listens for input on formInput and toggles 'is-invalid' class based on password confirmation.
+     *
+     * @param {Element} formInput - the form input element
+     * @param {Element} input - the input element
+     * @return {void}
+     */
     passwordNotConfirmed: (formInput = Element, input = Element) => {
       formInput.addEventListener('input', (e) => e.target.classList.toggle(
         'is-invalid',
