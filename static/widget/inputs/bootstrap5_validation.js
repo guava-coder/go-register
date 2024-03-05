@@ -1,3 +1,4 @@
+import * as validation from '../../js/util/validation.js'
 /**
  *
  *
@@ -21,61 +22,45 @@ export default function Bootstrap5Validation () {
     passwordNotConfirmed: (formInput = Element, input = Element) => {
       formInput.addEventListener('input', (e) => e.target.classList.toggle(
         'is-invalid',
-        isPasswordNotConfirmed(input.value, e.target.value)
+        validation.isPasswordNotConfirmed(input.value, e.target.value)
       ))
     },
+    /**
+     * Validates the password input in the form.
+     *
+     * @param {Element} formInput - the input element in the form
+     * @return {void} no return value
+     */
     passwordValidate: (formInput = Element) => {
       formInput.addEventListener('input', (e) => {
         e.target.classList.toggle(
           'is-invalid',
-          isPasswordInvalid(e.target.value)
+          validation.isPasswordInvalid(e.target.value)
         )
       })
     },
+    /**
+     * Validates the email input in the form.
+     *
+     * @param {Element} formInput - the input element to validate
+     * @return {void}
+     */
     emailValidate: (formInput = Element) => {
       formInput.addEventListener('input', (e) => e.target.classList.toggle(
         'is-invalid',
-        isEmailInvaild(e.target.value)
+        validation.isEmailInvalid(e.target.value)
       ))
     },
+    /**
+     * Check if the provided form data has any invalid values.
+     *
+     * @param {object} data - the form data to be validated
+     * @return {boolean} true if the form data has invalid values, false otherwise
+     */
     isFormDataHasInvaild: (data = {}) => {
-      return isPasswordNotConfirmed(data.Password, data.ConfirmPw) ||
-  isEmailInvaild(data.Email) ||
-  isPasswordInvalid(data.Password)
+      return validation.isPasswordNotConfirmed(data.Password, data.ConfirmPw) ||
+  validation.isEmailInvalid(data.Email) ||
+  validation.isPasswordInvalid(data.Password)
     }
   }
-}
-
-/**
- * @param {string} [input='']
- * @param {string} [confirm='']
- * @return {boolean}
- */
-const isPasswordNotConfirmed = (input = '', confirm = '') => {
-  return input !== confirm || input === ''
-}
-
-/**
- * @param {string} [psw='']
- * @return {boolean}
- */
-const isPasswordInvalid = (psw = '') => {
-  const checkStr = '1234567890QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm'
-  const isIncludesUpperLowerNum = () => {
-    for (const c of checkStr) {
-      if (!psw.includes(c)) {
-        return false
-      }
-    }
-    return true
-  }
-  return psw.length < 8 || isIncludesUpperLowerNum()
-}
-
-/**
- * @param {string} [value='']
- * @return {boolean}
- */
-const isEmailInvaild = (value = '') => {
-  return !value.includes('@')
 }
