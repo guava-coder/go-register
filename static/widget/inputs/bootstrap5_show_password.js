@@ -2,6 +2,7 @@
  * A function that handles the visibility of a password in a Bootstrap 5 form.
  * It takes a show password button element and an input selector as parameters,
  * and adds an event listener to the button to handle the password visibility.
+ *
  * example of show password button:
  * <span><button type="button" id="showPsw"
  * class="btn bi bi-eye-slash-fill"

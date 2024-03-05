@@ -1,5 +1,5 @@
 import UserController from '../../js/controller/user_controller.js'
-import Bootstrap5Validation from '../../widget/inputs/bootstrap5_validation.js'
+import * as Bootstrap5Validation from '../../widget/inputs/bootstrap5_validation.js'
 import EmailController from '../../js/controller/email_controller.js'
 import GotoVerifyPage from '../verification/go_to_verify_page.js'
 

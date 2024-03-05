@@ -60,7 +60,10 @@ function UserService () {
   const ajaj = Ajaj()
   const h = AuthHeaders().get()
   return {
-    post: (args = { }) => { args.headers = h; return ajaj.post(args) },
+    post: (args = { }) => {
+      args.headers = h
+      return (h.get('authorization').includes('undefined')) ? ajaj.post() : ajaj.post(args)
+    },
     put: (args = { }) => { args.headers = h; return ajaj.put(args) },
   }
 }
