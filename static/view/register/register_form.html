@@ -1,2 +1,6 @@
 <div hx-get="/static/template/register_template.html" hx-trigger="load" hx-swap="outerHTML"></div>
 <script type="module" src="/static/view/register/register_form.js"></script>
+<script type="module">
+    import RegisterForm from "../../../../../../../static/view/register/register_form.js"
+    setTimeout(() => RegisterForm(), 30)
+</script>

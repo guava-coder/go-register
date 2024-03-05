@@ -9,7 +9,6 @@ function VerifyCode () {
   const updateUserAuth = () => {
     const input = { Id: userObj.Id, Auth: document.querySelector('#auth').value }
 
-    console.log('verify')
     UserController().updateUserAuth(JSON.stringify(input))
       .catch(err => console.log(err))
       .then(data => {

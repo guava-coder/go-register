@@ -3,9 +3,7 @@ import * as Bootstrap5Validation from '../../widget/inputs/bootstrap5_validation
 import EmailController from '../../js/controller/email_controller.js'
 import GotoVerifyPage from '../verification/go_to_verify_page.js'
 
-setTimeout(() => RegisterForm(), 150)
-
-function RegisterForm () {
+export default function RegisterForm () {
   const addUserAndSendVerificationCode = (body = '') => {
     UserController().addUser(body)
       .catch(err => alert(err.Response))
