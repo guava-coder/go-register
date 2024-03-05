@@ -59,7 +59,7 @@ If you are...
         "Host": "smtp.gmail.com"
     }
 
- You can also use [MailTrap](https://mailtrap.io/), there is a tutorial [here](https://mailtrap.io/blog/golang-send-email/).
+ You can also use [MailTrap](https://mailtrap.io/), here is a [tutorial](https://mailtrap.io/blog/golang-send-email/).
  
  ---
  
@@ -83,17 +83,17 @@ If you are...
     <tr>
         <td>Login</td>
         <td>V</td>
-        <td>X</td>
-    </tr> 
-    <tr>
-        <td>Recover Password</td>
-        <td>X</td>
-        <td>V</td>
+        <td>X (default users only)</td>
     </tr> 
     <tr>
         <td>User Setting</td>
+        <td>V</td>
         <td>X</td>
+    </tr> 
+     <tr>
+        <td>Update Email</td>
         <td>X</td>
+        <td>V</td>
     </tr> 
     </tbody>
     
