@@ -2,7 +2,7 @@ import JwtController from '../../js/controller/jwt_controller.js'
 import GotoVerifyPage from '../verification/go_to_verify_page.js'
 import EmailController from '../../js/controller/email_controller.js'
 
-export default function LoginForm () {
+(() => {
   document.querySelector('#loginForm').addEventListener('submit', function (e) {
     e.preventDefault()
 
@@ -30,4 +30,4 @@ export default function LoginForm () {
         }
       })
   })
-}
+})()

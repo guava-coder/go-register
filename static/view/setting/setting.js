@@ -1,6 +1,6 @@
 import UserController from '../../js/controller/user_controller.js'
 
-export default function Setting () {
+(() => {
 /**
  *
  * @return {{
@@ -45,4 +45,4 @@ export default function Setting () {
       alert('Server error. Error', error)
     }
   })
-}
+})()

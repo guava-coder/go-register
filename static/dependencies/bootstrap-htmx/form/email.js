@@ -7,13 +7,11 @@ function isEmailInvalid (value = '') {
 }
 
 (() => {
-  document.addEventListener('htmx:afterRequest', () => {
-    const email = document.querySelector('#email')
-    if (email) {
-      email.addEventListener('input', (e) => e.target.classList.toggle(
-        'is-invalid',
-        isEmailInvalid(e.target.value)
-      ))
-    }
-  })
+  const email = document.querySelector('#email')
+  if (email) {
+    email.addEventListener('input', (e) => e.target.classList.toggle(
+      'is-invalid',
+      isEmailInvalid(e.target.value)
+    ))
+  }
 })()

@@ -1,9 +1,8 @@
 import UserController from '../../js/controller/user_controller.js'
-import * as Bootstrap5Validation from '../../widget/inputs/bootstrap5_validation.js'
 import EmailController from '../../js/controller/email_controller.js'
 import GotoVerifyPage from '../verification/go_to_verify_page.js'
 
-export default function RegisterForm () {
+(() => {
   const addUserAndSendVerificationCode = (body = '') => {
     UserController().addUser(body)
       .catch(err => alert(err.Response))
@@ -28,12 +27,25 @@ export default function RegisterForm () {
     e.preventDefault()
 
     const formData = new FormData(e.target)
-    const userData = Object.fromEntries(formData)
 
-    if (Bootstrap5Validation().isFormDataHasInvaild(userData)) {
-      alert('Please complete the register form')
+    let flag = true
+    formData.forEach(i => {
+      if (i === '') {
+        flag = false
+      }
+    })
+
+    if (flag) {
+      if (document.querySelector('.is-invalid') === null) {
+        const userData = Object.fromEntries(formData)
+        addUserAndSendVerificationCode(JSON.stringify(userData))
+      } else {
+        document.querySelector('#confirmpw').value = ''
+        alert('form has invalid input')
+      }
     } else {
-      addUserAndSendVerificationCode(JSON.stringify(userData))
+      document.querySelector('#confirmpw').value = ''
+      alert('form not complete')
     }
   })
-}
+})()
