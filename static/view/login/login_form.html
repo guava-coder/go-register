@@ -1,12 +1,15 @@
 <div class="p-4 g-col-6"></div>
 <form id="loginForm" method="post">
-    <div hx-get="/static/template/email_and_password.html" hx-trigger="load" hx-swap="outerHTML"></div>
+    <div hx-get="/static/dependencies/bootstrap-htmx/template/email.html" hx-trigger="load" hx-swap="outerHTML"></div>
+    <script type="module" src="/static/dependencies/bootstrap-htmx/form/email.js"></script>
+    <div hx-get="/static/dependencies/bootstrap-htmx/template/password.html" hx-trigger="load" hx-swap="outerHTML"></div>
+    <script type="module" src="/static/dependencies/bootstrap-htmx/form/password/password.js"></script>
     <div class="text-center">
         <button type="submit" id="submit" class="btn btn-primary bi bi-box-arrow-in-right"> Login</button>
     </div>
 </form>
 <script type="module" src="/static/view/login/login_form.js"></script>
 <script type="module">
-    import LoginForm from "../../../../../../../static/view/login/login_form.js"
+    import LoginForm from "/static/view/login/login_form.js"
     setTimeout(() => LoginForm(), 30)
 </script>
