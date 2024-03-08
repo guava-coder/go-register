@@ -1,5 +1,6 @@
 <div class="container" style="overflow-y: auto;">
-    <div hx-get="/static/widget/scene/return_btn.html" hx-trigger="load" hx-swap="innerHTML"></div>
+    <div hx-get="/static/dependencies/bootstrap-htmx/template/return_btn.html" hx-trigger="load" hx-swap="innerHTML"></div>
+    <script src="/static/dependencies/bootstrap-htmx/scene/return_btn.js"></script>
     <div class="row mb-4"></div>
     <div class="row mb-4">
         <h2>User Setting</h2>
@@ -33,7 +34,7 @@
 
 <script type="module" src="/static/view/setting/setting.js"></script>
 <script type="module">
-    import Setting from "../../../../../../../static/view/setting/setting.js"
+    import Setting from "/static/view/setting/setting.js"
 
     setTimeout(() => Setting(), 30)
 </script>
