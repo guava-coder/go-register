@@ -29,11 +29,17 @@ If you are...
     
     git clone https://github.com/guava-coder/go-register.git
 
- 2. Run app.exe in terminal:
+ 2. build the project in ternimal:
+    
+    ./build.sh
+
+ 3. go into build folder and Run app.exe in terminal:
+
+    cd build/go-register/
 
     ./app.exe
 
- 3. After running, open the app in the browser with the URL below:
+ 4. After running, open the app in the browser with the URL below:
 
     http://localhost:8082/
 
@@ -62,42 +68,14 @@ If you are...
  You can also use [MailTrap](https://mailtrap.io/), here is a [tutorial](https://mailtrap.io/blog/golang-send-email/).
  
  ---
- 
- <table>
-    <thead>
-        <th>Features</th>
-        <th>Currently Available</th>
-        <th>Set up Required</th>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Register</td>
-        <td>V</td>
-        <td>X (only store unauthorized user)</td>
-    </tr>
-    <tr>
-        <td>Email Verification</td>
-        <td>V</td>
-        <td>V</td>
-    </tr> 
-    <tr>
-        <td>Login</td>
-        <td>V</td>
-        <td>X (default users only)</td>
-    </tr> 
-    <tr>
-        <td>User Setting</td>
-        <td>V</td>
-        <td>X</td>
-    </tr> 
-     <tr>
-        <td>Update Email</td>
-        <td>X</td>
-        <td>V</td>
-    </tr> 
-    </tbody>
-    
-</table>
+
+|Features|Currently Available|Set up Required|
+|:-|:-|:-|
+|Register|V|X (only store unauthorized user)|
+|Email Verification|V|V|
+|Login|V|X (default users only)|
+|User Setting|V|X|
+|Update Email|X|V|
  
  --- 
  ## Open Source Dependencies
