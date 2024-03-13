@@ -1,9 +1,7 @@
 import UserController from '../../js/controller/user_controller.js'
 import EmailController from '../../js/controller/email_controller.js'
 
-setTimeout(() => VerifyCode(), 150)
-
-function VerifyCode () {
+(() => {
   const userObj = JSON.parse(document.querySelector('#userdata').innerHTML)
 
   const updateUserAuth = () => {
@@ -28,4 +26,4 @@ function VerifyCode () {
   resendMail.onclick = () => EmailController().sendVerificationMail(JSON.stringify(userObj))
     .catch(err => console.log(err.Response))
     .then(res => alert(res.Response))
-}
+})()

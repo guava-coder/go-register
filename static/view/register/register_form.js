@@ -5,7 +5,7 @@ import GotoVerifyPage from '../verification/go_to_verify_page.js'
 (() => {
   const addUserAndSendVerificationCode = (body = '') => {
     UserController().addUser(body)
-      .catch(err => alert(err.Response))
+      .catch(err => alert(err))
       .then(data => {
         if (data !== undefined) {
           const submit = document.querySelector('#submit')
@@ -13,12 +13,14 @@ import GotoVerifyPage from '../verification/go_to_verify_page.js'
           submit.innerHTML = `Verifying email address...
         <i class="bi bi-hourglass-split"></i>`
 
-          EmailController().sendVerificationMail(JSON.stringify(data.User))
+          const userStr = JSON.stringify(data.User)
+
+          EmailController().sendVerificationMail(userStr)
             .catch(err => {
-              alert(err.Response)
+              alert(err)
               submit.innerHTML = 'Register'
             })
-            .then(res => { if (res !== undefined) GotoVerifyPage(data.User) })
+            .then(res => { if (res !== undefined) GotoVerifyPage(userStr) })
         }
       })
   }
@@ -38,6 +40,7 @@ import GotoVerifyPage from '../verification/go_to_verify_page.js'
     if (flag) {
       if (document.querySelector('.is-invalid') === null) {
         const userData = Object.fromEntries(formData)
+        delete userData.ConfirmPw
         addUserAndSendVerificationCode(JSON.stringify(userData))
       } else {
         document.querySelector('#confirmpw').value = ''

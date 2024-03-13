@@ -29,6 +29,7 @@ export default function UserController () {
   const addUserHandler = () => {
     const handler = HttpStatusHandler()
     handler.Unauthorized = () => console.log('Email address invaild')
+    handler.BadRequest = () => console.log('User exist')
     return handler
   }
 
@@ -46,7 +47,7 @@ export default function UserController () {
 
   return {
     findUserData: () =>
-      serv.post({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler() }),
+      serv.getUserData({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler() }),
     addUser: (bodyStr = '') =>
       serv.post({ url: '/api/v1/user/add', bodyStr, statusHandler: addUserHandler() }),
     updateUserAuth: (bodyStr = '') =>
@@ -60,10 +61,11 @@ function UserService () {
   const ajaj = Ajaj()
   const h = AuthHeaders().get()
   return {
-    post: (args = { }) => {
+    getUserData: (args = { }) => {
       args.headers = h
       return (h.get('authorization').includes('undefined')) ? ajaj.post() : ajaj.post(args)
     },
+    post: (args = { }) => { args.headers = h; return ajaj.post(args) },
     put: (args = { }) => { args.headers = h; return ajaj.put(args) },
   }
 }

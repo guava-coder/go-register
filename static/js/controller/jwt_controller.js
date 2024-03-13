@@ -15,7 +15,7 @@ export default function JwtController () {
     login: async (bodyStr = '') => {
       const statusHandler = HttpStatusHandler()
       statusHandler.Unauthorized = () => console.log('User unauthorized')
-      statusHandler.BadRequest = () => alert('Please input your email and password')
+      statusHandler.BadRequest = () => alert('User not exist')
       statusHandler.Forbidden = () => alert('Password incorrect')
 
       return fetch('/api/v1/jwt/login', {

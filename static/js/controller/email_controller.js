@@ -19,7 +19,7 @@ export default function EmailController () {
   const serv = EmailService()
   return {
     verifyEmail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/verify', bodyStr, statusHandler: getHandler() }) },
-    sendVerificationMail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/send', bodyStr, statusHandler: getHandler() }) }
+    sendVerificationMail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/send/verification', bodyStr, statusHandler: getHandler() }) }
   }
 }
 

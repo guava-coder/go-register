@@ -50,14 +50,17 @@ func (serv JwtService) Login(ctx *gin.Context) {
 		}
 	}
 
+	unauthorized := func(user User) {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"Response": "User doesn't have functional authorized key",
+			"Id":       user.Id,
+		})
+	}
 	checkUserAuthorized := func(user User) {
 		if serv.userAuth.MustIsAuth([]byte(user.Auth)) {
 			getJWT(serv.userAuth.MustGetOriginAuth(), user)
 		} else {
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"Response": "User doesn't have functional authorized key",
-				"Id":       user.Id,
-			})
+			unauthorized(user)
 		}
 	}
 
@@ -68,8 +71,10 @@ func (serv JwtService) Login(ctx *gin.Context) {
 			})
 		})
 		if err == nil {
-			if user.Auth != "" {
+			if user.Auth == "" {
 				checkUserAuthorized(user)
+			} else {
+				unauthorized(user)
 			}
 		} else {
 			ctx.JSON(http.StatusForbidden, gin.H{

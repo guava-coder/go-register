@@ -11,7 +11,10 @@ import playjs from '../../../dependencies/playjs/playjs.js'
 })(playjs('testSendVerificationMail'));
 
 ((u = playjs()) => {
-  EmailController().sendVerificationMail('{"Email":"###@gmail.com"}')
+  EmailController().sendVerificationMail(`{
+    "Id":"",
+    "Email":"ericwangcatch@gmail.com"
+  }`)
     .catch(err => console.log(err))
     .then(data => {
       u.assertNotTrue(data === undefined)

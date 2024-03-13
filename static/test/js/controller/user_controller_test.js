@@ -11,13 +11,13 @@ import UserController from '../../../js/controller/user_controller.js'
 })(playjs('testFindUserData'));
 
 ((u = playjs()) => {
-  UserController().addUser(`{
-    "Id": "",
-    "Name": "test",
-    "Email": test@mail.com",
-    "Bio":"test",
-    "Password": "123",
-    "Auth": "test"}`)
+  UserController().addUser(`
+  {
+    "Name": "eric",
+    "Email": "ericwangcatch@gmail.com",
+    "Password": "machiggg7213"
+}
+    `)
     .catch(err => console.log(err))
     .then(data => {
       u.assertNotTrue(data === undefined)
