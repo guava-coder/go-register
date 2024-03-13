@@ -3,7 +3,7 @@ import JwtController from '../../../js/controller/jwt_controller.js'
 
 ((u = playjs()) => {
   JwtController().login(`{
-    "Email":"ericwangcatch@gmail.com",
+    "Email":"###@mail.com",
     "Password":"machiggg7213"
 }`)
     .catch(err => console.log(err))

@@ -14,7 +14,7 @@ import UserController from '../../../js/controller/user_controller.js'
   UserController().addUser(`
   {
     "Name": "eric",
-    "Email": "ericwangcatch@gmail.com",
+    "Email": "###@mail.com",
     "Password": "machiggg7213"
 }
     `)

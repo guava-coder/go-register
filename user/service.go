@@ -90,7 +90,7 @@ func (serv UserService) AddUser(ctx *gin.Context, user User) {
 }
 
 func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
-	changeUserAuthToReal := func(id string) {
+	getAuth := func(id string) {
 		usrWithAuth := User{
 			Id:   id,
 			Auth: string(serv.UserAuth.MustGetHashAuth()),
@@ -109,7 +109,7 @@ func (serv UserService) UpdateUserAuth(ctx *gin.Context) {
 
 	handleUpdate := func(usr User) {
 		if serv.repo.IsTempCodeCorrect(usr) {
-			changeUserAuthToReal(usr.Id)
+			getAuth(usr.Id)
 		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"Response": "User ID or Token incorrect",

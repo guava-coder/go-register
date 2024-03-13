@@ -13,7 +13,7 @@ import playjs from '../../../dependencies/playjs/playjs.js'
 ((u = playjs()) => {
   EmailController().sendVerificationMail(`{
     "Id":"",
-    "Email":"ericwangcatch@gmail.com"
+    "Email":"###@mail.com"
   }`)
     .catch(err => console.log(err))
     .then(data => {

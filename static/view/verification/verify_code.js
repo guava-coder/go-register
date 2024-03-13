@@ -7,6 +7,8 @@ import EmailController from '../../js/controller/email_controller.js'
   const updateUserAuth = () => {
     const input = { Id: userObj.Id, Auth: document.querySelector('#auth').value }
 
+    console.log(JSON.stringify(input))
+
     UserController().updateUserAuth(JSON.stringify(input))
       .catch(err => console.log(err))
       .then(data => {
