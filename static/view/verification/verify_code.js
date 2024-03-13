@@ -5,7 +5,7 @@ import EmailController from '../../js/controller/email_controller.js'
   const userObj = JSON.parse(document.querySelector('#userdata').innerHTML)
 
   const updateUserAuth = () => {
-    const input = { Id: userObj.Id, Auth: document.querySelector('#auth').value }
+    const input = { Id: userObj.Id, TempCode: document.querySelector('#tempcode').value }
 
     console.log(JSON.stringify(input))
 
