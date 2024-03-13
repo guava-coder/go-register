@@ -6,10 +6,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	. "goregister.com/app/data"
+	data "goregister.com/app/data"
 )
 
-func ReadAndHandleRequestBody[T Data](ctx *gin.Context, operation func(T)) {
+// Reading the request body and convert to given type for operation.
+func ReadAndHandleRequestBody[T data.Data](ctx *gin.Context, operation func(T)) {
 	handleBody := func(body []byte, operation func(T), ctx *gin.Context) {
 		var us T
 		err := json.Unmarshal(body, &us)

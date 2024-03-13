@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	auth "goregister.com/app/auth"
-	. "goregister.com/app/data"
+	data "goregister.com/app/data"
 	req "goregister.com/app/request"
 	user "goregister.com/app/user"
 )
@@ -23,22 +23,15 @@ func NewJwtService(userRepo user.UserRepository, userAuth auth.UserAuth) JwtServ
 	}
 }
 
-func (serv JwtService) readAndHandleRequestBody(ctx *gin.Context, op func(User)) {
-	req.ReadAndHandleRequestBody[User](ctx, op)
+func (serv JwtService) readAndHandleRequestBody(ctx *gin.Context, op func(data.User)) {
+	req.ReadAndHandleRequestBody(ctx, op)
 }
 
-func (serv JwtService) CheckUserPassword(input User, handleBadRequest func(statusCode int)) (User, error) {
-	user, err := serv.userRepo.QueryByInfo(input)
-	if err == nil {
-		return user, bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
-	} else {
-		handleBadRequest(http.StatusBadRequest)
-		return user, nil
-	}
-}
-
+// Login performs the User login functionality.
+//
+// ctx *gin.Context
 func (serv JwtService) Login(ctx *gin.Context) {
-	getJWT := func(key []byte, user User) {
+	getJWT := func(key []byte, user data.User) {
 		var provider JwtProvider
 		token, err := provider.GetJWT(key, user.Id)
 		if err == nil {
@@ -50,7 +43,7 @@ func (serv JwtService) Login(ctx *gin.Context) {
 		}
 	}
 
-	checkUserAuthorized := func(user User) {
+	checkUserAuthorized := func(user data.User) {
 		if user.Auth != "" && serv.userAuth.MustIsAuth([]byte(user.Auth)) {
 			getJWT(serv.userAuth.MustGetOriginAuth(), user)
 		} else {
@@ -61,7 +54,7 @@ func (serv JwtService) Login(ctx *gin.Context) {
 		}
 	}
 
-	comparePassword := func(user User, input User) {
+	comparePassword := func(user data.User, input data.User) {
 		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password))
 		if err == nil {
 			checkUserAuthorized(user)
@@ -72,7 +65,7 @@ func (serv JwtService) Login(ctx *gin.Context) {
 		}
 	}
 
-	getToken := func(input User) {
+	getToken := func(input data.User) {
 		user, err := serv.userRepo.QueryByInfo(input)
 		if err == nil {
 			comparePassword(user, input)

@@ -6,17 +6,16 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 	. "goregister.com/app/data"
-	. "goregister.com/app/user"
+	user "goregister.com/app/user"
 )
 
 type EmailService struct {
-	userRepo   UserRepository
+	userRepo   user.UserRepository
 	mailSender MailSender
 }
 
-func NewEmailService(userRepo UserRepository, m MailSender) EmailService {
+func NewEmailService(userRepo user.UserRepository, m MailSender) EmailService {
 	return EmailService{
 		userRepo:   userRepo,
 		mailSender: m,
@@ -40,19 +39,6 @@ func getVerificationMailForm(receiver User) Email {
 	return form
 }
 
-func (serv EmailService) sendVerificationMail(receiver User, ctx *gin.Context) {
-	err := serv.mailSender.SendMail(getVerificationMailForm(receiver))
-	if err == nil {
-		ctx.JSON(http.StatusOK, gin.H{
-			"Response": "A verification mail has sended, please check your email and verify it.",
-		})
-	} else {
-		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"Response": "Sending a verification mail failed, please try again.",
-		})
-	}
-}
-
 const (
 	UpperCaseNums = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	EngCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZqwertyuiopasdfghjklzxcvbnm0123456789"
@@ -67,13 +53,25 @@ func RandStringBytes(length int, sample string) []byte {
 }
 
 func (serv EmailService) SendVerificationEmail(ctx *gin.Context) {
+	sendMail := func(updatedU User) {
+		err := serv.mailSender.SendMail(getVerificationMailForm(updatedU))
+		if err == nil {
+			ctx.JSON(http.StatusOK, gin.H{
+				"Response": "A verification mail has sended, please check your email and verify it.",
+			})
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"Response": "Sending a verification mail failed, please try again.",
+			})
+		}
+	}
 	addTempCodeAndSendMail := func(id string) {
 		updatedU, err := serv.userRepo.UpdateTempCode(User{
 			Id:       id,
 			TempCode: string(RandStringBytes(6, UpperCaseNums)),
 		})
 		if err == nil {
-			serv.sendVerificationMail(updatedU, ctx)
+			sendMail(updatedU)
 		} else {
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"Response": "System failed to generate temporary code",
@@ -126,45 +124,4 @@ func NewPasswordMail(receiver string, password string) Email {
 
 	form.Receiver = receiver
 	return form
-}
-
-func (serv EmailService) SendTemporaryPassword(ctx *gin.Context) {
-	sendMailToUser := func(u User, password string) {
-		err := serv.mailSender.SendMail(NewPasswordMail(u.Email, password))
-		if err == nil {
-			ctx.JSON(http.StatusOK, gin.H{
-				"Response": "We sended a new password for you, please check your email and use it to login.",
-			})
-		} else {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"Response": "Sending mail failed, please try again.",
-			})
-		}
-	}
-
-	checkTempCode := func(ctx *gin.Context, u User) {
-		if serv.userRepo.IsTempCodeCorrect(u) {
-			unhash := RandStringBytes(8, EngCharacters)
-
-			newpsw, err := bcrypt.GenerateFromPassword(unhash, 0)
-			u.Password = string(newpsw)
-
-			res, err := serv.userRepo.UpdatePassword(u)
-
-			if err == nil {
-				sendMailToUser(res, string(unhash))
-			} else {
-				ctx.JSON(http.StatusBadRequest, gin.H{
-					"Response": err.Error(),
-				})
-			}
-		} else {
-			ctx.JSON(http.StatusForbidden, gin.H{
-				"Response": "code incorrect",
-			})
-		}
-	}
-
-	var handler EmailHandler
-	handler.VerifyUserEmail(ctx, checkTempCode)
 }

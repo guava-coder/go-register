@@ -6,15 +6,15 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	. "goregister.com/app/auth"
+	auth "goregister.com/app/auth"
 )
 
 type BearerVerfier struct {
-	userAuth UserAuth
+	userAuth auth.UserAuth
 	Ctx      *gin.Context
 }
 
-func NewBearerVerfier(userAuth UserAuth, ctx *gin.Context) BearerVerfier {
+func NewBearerVerfier(userAuth auth.UserAuth, ctx *gin.Context) BearerVerfier {
 	return BearerVerfier{
 		userAuth: userAuth,
 		Ctx:      ctx,
