@@ -174,3 +174,24 @@ func (serv UserService) UpdateUserInfo(ctx *gin.Context, id string) {
 		}
 	})
 }
+
+func (serv UserService) CheckPassword(ctx *gin.Context, id string) {
+	serv.readAndHandleRequestBody(ctx, func(u User) {
+		res, err := serv.repo.QueryById(id)
+		if err == nil {
+			if bcrypt.CompareHashAndPassword([]byte(res.Password), []byte(u.Password)) == nil {
+				ctx.JSON(http.StatusOK, gin.H{
+					"Response": "Password correct",
+				})
+			} else {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"Response": "Password incorrect",
+				})
+			}
+		} else {
+			ctx.JSON(http.StatusForbidden, gin.H{
+				"Response": "User not found",
+			})
+		}
+	})
+}

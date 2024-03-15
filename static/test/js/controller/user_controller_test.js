@@ -14,7 +14,7 @@ import UserController from '../../../js/controller/user_controller.js'
   UserController().addUser(`
   {
     "Name": "eric",
-    "Email": "###@mail.com",
+    "Email": "###",
     "Password": "machiggg7213"
 }
     `)
@@ -47,4 +47,15 @@ import UserController from '../../../js/controller/user_controller.js'
       u.assertNotTrue(data === undefined)
       console.log(data)
     })
-})(playjs('testUpdateUserInfo'))
+})(playjs('testUpdateUserInfo'));
+
+((u = playjs()) => {
+  UserController().checkPassword(`{
+      "Password": "123"
+    }`)
+    .catch(err => console.log(err))
+    .then(data => {
+      u.assertNotTrue(data === undefined)
+      console.log(data)
+    })
+})(playjs('testCheckPassword'))

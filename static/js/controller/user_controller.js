@@ -11,7 +11,8 @@ import HttpStatusHandler from '../request/http_status_handler.js'
  * findUserData:()=>{},
  * addUser:(bodyStr='')=>{},
  * updateUserAuth: (bodyStr = '') =>{},
- * updateUserInfo: (bodyStr='')=>{}
+ * updateUserInfo: (bodyStr='')=>{},
+ * checkPassword: (bodyStr = '') =>{}
  * }}
  */
 export default function UserController () {
@@ -45,6 +46,15 @@ export default function UserController () {
     return handler
   }
 
+  const checkPwHandler = () => {
+    const handler = HttpStatusHandler()
+    handler.BadRequest = () => alert('Password incorrect')
+    handler.Forbidden = () => {
+      alert('jwt verify failed, please login.')
+    }
+    return handler
+  }
+
   return {
     findUserData: () =>
       serv.getUserData({ url: '/api/v1/user/query', bodyStr: '', statusHandler: jwtHeaderHandler() }),
@@ -53,7 +63,9 @@ export default function UserController () {
     updateUserAuth: (bodyStr = '') =>
       serv.put({ url: '/api/v1/user/auth', bodyStr, statusHandler: updateAuthHandler() }),
     updateUserInfo: (bodyStr = '') =>
-      serv.put({ url: '/api/v1/user/update', bodyStr, statusHandler: updateInfoHandler() })
+      serv.put({ url: '/api/v1/user/update', bodyStr, statusHandler: updateInfoHandler() }),
+    checkPassword: (bodyStr = '') =>
+      serv.getUserData({ url: '/api/v1/user/check/password', bodyStr, statusHandler: checkPwHandler() }),
   }
 }
 
@@ -61,11 +73,11 @@ function UserService () {
   const ajaj = Ajaj()
   const h = AuthHeaders().get()
   return {
-    getUserData: (args = { }) => {
+    getUserData: (args = {}) => {
       args.headers = h
       return (h.get('authorization').includes('undefined')) ? ajaj.post() : ajaj.post(args)
     },
-    post: (args = { }) => { args.headers = h; return ajaj.post(args) },
-    put: (args = { }) => { args.headers = h; return ajaj.put(args) },
+    post: (args = {}) => { args.headers = h; return ajaj.post(args) },
+    put: (args = {}) => { args.headers = h; return ajaj.put(args) },
   }
 }
