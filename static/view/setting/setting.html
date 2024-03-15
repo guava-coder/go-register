@@ -17,7 +17,8 @@
         <span><button type="button" id="changeEmail" class="btn bi bi-pencil" style="font-size: 2rem;"></button></span>
     </div>
     <div class="row mb-4"></div>
-    <button type="button" id="updatePassword" class="btn btn-warning">Update Password</button>
+    <button type="button" id="updatePassword" class="btn btn-warning" hx-get="/static/view/setting/check_password.html"
+        hx-trigger="click" hx-swap="innerHTML" hx-target="#app">Update Password</button>
 </div>
 
 <script type="module" src="/static/view/setting/setting.js"></script>
