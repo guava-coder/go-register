@@ -105,7 +105,7 @@ func (repo UserRepository) DeleteUser(id string) error {
 
 func (repo UserRepository) UpdateTempCode(user User) (User, error) {
 	if user.TempCode == "" {
-		return repo.DB[user.Id], errors.New("No TempCode")
+		return repo.DB[user.Id], errors.New("no tempCode")
 	} else {
 		temp := repo.DB[user.Id]
 		temp.TempCode = user.TempCode
@@ -116,7 +116,7 @@ func (repo UserRepository) UpdateTempCode(user User) (User, error) {
 
 func (repo UserRepository) UpdateUserAuth(user User) (User, error) {
 	if user.Auth == "" {
-		return repo.DB[user.Id], errors.New("No Auth")
+		return repo.DB[user.Id], errors.New("no auth")
 	} else {
 		if repo.DB[user.Id].Id == "" {
 			return repo.DB[user.Id], NewUserError().NotFound

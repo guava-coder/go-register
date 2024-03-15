@@ -58,4 +58,14 @@ import UserController from '../../../js/controller/user_controller.js'
       u.assertNotTrue(data === undefined)
       console.log(data)
     })
-})(playjs('testCheckPassword'))
+})(playjs('testCheckPassword'));
+
+((u = playjs()) => {
+  UserController().updatePassword(`{
+  "Password": "123"
+}`).catch(err => console.log(err))
+    .then(data => {
+      u.assertNotTrue(data === undefined)
+      console.log(data)
+    })
+})(playjs('testUpdatePassword'))

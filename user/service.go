@@ -6,17 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
-	. "goregister.com/app/auth"
+	auth "goregister.com/app/auth"
 	. "goregister.com/app/data"
-	. "goregister.com/app/request"
+	req "goregister.com/app/request"
 )
 
 type UserService struct {
 	repo UserRepository
-	UserAuth
+	auth.UserAuth
 }
 
-func NewUserService(repo UserRepository, userAuth UserAuth) UserService {
+func NewUserService(repo UserRepository, userAuth auth.UserAuth) UserService {
 	return UserService{
 		repo:     repo,
 		UserAuth: userAuth,
@@ -24,7 +24,7 @@ func NewUserService(repo UserRepository, userAuth UserAuth) UserService {
 }
 
 func (serv UserService) readAndHandleRequestBody(ctx *gin.Context, op func(User)) {
-	ReadAndHandleRequestBody[User](ctx, op)
+	req.ReadAndHandleRequestBody[User](ctx, op)
 }
 
 func (serv UserService) QueryById(ctx *gin.Context, id string) {
@@ -128,8 +128,8 @@ func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
 				"Response": "User Password updated",
 			})
 		} else {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"Response": "Password update failed",
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"Response": "Password update failed, Error:" + err.Error(),
 			})
 		}
 	}
@@ -149,9 +149,16 @@ func (serv UserService) UpdatePassword(ctx *gin.Context, id string) {
 	serv.readAndHandleRequestBody(ctx, func(u User) {
 		tempUser, err := serv.repo.QueryById(id)
 		if err == nil {
-			hashPassword(u.Password, tempUser)
+			if bcrypt.CompareHashAndPassword([]byte(tempUser.Password), []byte(u.Password)) == nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{
+					"Response": "Password is same as old one",
+				})
+				return
+			} else {
+				hashPassword(u.Password, tempUser)
+			}
 		} else {
-			ctx.JSON(http.StatusBadRequest, gin.H{
+			ctx.JSON(http.StatusForbidden, gin.H{
 				"Response": err.Error(),
 			})
 		}

@@ -12,7 +12,8 @@ import HttpStatusHandler from '../request/http_status_handler.js'
  * addUser:(bodyStr='')=>{},
  * updateUserAuth: (bodyStr = '') =>{},
  * updateUserInfo: (bodyStr='')=>{},
- * checkPassword: (bodyStr = '') =>{}
+ * checkPassword: (bodyStr = '') =>{},
+ * updatePassword: (bodyStr = '') =>{}
  * }}
  */
 export default function UserController () {
@@ -48,10 +49,11 @@ export default function UserController () {
 
   const checkPwHandler = () => {
     const handler = HttpStatusHandler()
-    handler.BadRequest = () => alert('Password incorrect')
-    handler.Forbidden = () => {
-      alert('jwt verify failed, please login.')
-    }
+    return handler
+  }
+
+  const updatePasswordHandler = () => {
+    const handler = HttpStatusHandler()
     return handler
   }
 
@@ -66,6 +68,8 @@ export default function UserController () {
       serv.put({ url: '/api/v1/user/update', bodyStr, statusHandler: updateInfoHandler() }),
     checkPassword: (bodyStr = '') =>
       serv.getUserData({ url: '/api/v1/user/check/password', bodyStr, statusHandler: checkPwHandler() }),
+    updatePassword: (bodyStr = '') =>
+      serv.put({ url: '/api/v1/user/password', bodyStr, statusHandler: updatePasswordHandler() }),
   }
 }
 

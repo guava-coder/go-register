@@ -16,15 +16,13 @@ import UserController from '../../js/controller/user_controller.js'
       const userData = Object.fromEntries(formData)
 
       UserController().checkPassword(JSON.stringify(userData))
-        .catch(err => alert(err))
+        .catch(err => alert(err.Response))
         .then(data => {
           if (data !== undefined) {
             const hxPage = '#setPassword'
             htmx.trigger(hxPage, 'loadPage')
             htmx.process(document.querySelector('#app'))
-          } else {
-            alert('Password incorrect')
-          }
+          } 
         })
     }
   })
