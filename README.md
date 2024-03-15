@@ -75,7 +75,7 @@ If you are...
 |Email Verification|V|V|
 |Login|V|X (default users only)|
 |User Setting|V|X|
-|Update Email|X|V|
+|Update Password|V|X|
  
  --- 
  ## Open Source Dependencies
