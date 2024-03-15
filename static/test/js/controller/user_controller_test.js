@@ -51,7 +51,7 @@ import UserController from '../../../js/controller/user_controller.js'
 
 ((u = playjs()) => {
   UserController().checkPassword(`{
-      "Password": "123"
+      "Password": "000"
     }`)
     .catch(err => console.log(err))
     .then(data => {
