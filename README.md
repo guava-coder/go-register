@@ -1,26 +1,23 @@
 # GO-Register
 
  ---
-Go-Register is a full-stack, single-page website that implements user registration and login features.
+Go-Register is a full-stack, single-page application that implements user registration and login functions.
 It has a clean, responsive UI, and great extensibility.
 
-If you are...
-
- * A web dev who wants the user register feature.
- * A designer who wants to make UI/UX around user login.
- * Or doesn't want to make these features from scratch :P
- 
- Then this is for you! 
+Originally I was making users register and log in from scratch for a website.
+To make these functions easier to test and optimize, I decided to make a project exclusively for this. you can use this project for learning and demos.
  
  ---
 ## Before you start...
  1. Data storage:
     
-    User Data are stored in a Hashmap, thus the app can start without the database. But keep in mind using a database to persist data is very important. 
+    User Data are stored in a Hashmap, thus this project can run without the database.
+    But keep in mind you should use a database or storage to persist data for your website or app. 
  
- 2. JWT generate:
+ 3. JWT generate:
     
-    The key in the auth.txt file is used to produce the JWT token, if you want to use this project elsewhere, make sure to change and hide the key to prevent security vulnerability.
+    The key in the auth.txt file is used to produce the JWT token, if you would like to use this project elsewhere
+    , please make sure to change and hide the key to prevent security vulnerability.
     
  ---
 ## How to start
@@ -29,11 +26,11 @@ If you are...
     
     git clone https://github.com/guava-coder/go-register.git
 
- 2. build the project in ternimal:
+ 2. build the project in the terminal:
     
     ./build.sh
 
- 3. go into build folder and Run app.exe in terminal:
+ 3. go into the build folder and Run app.exe in the terminal:
 
     cd build/go-register/
 
@@ -55,9 +52,9 @@ If you are...
     Password: 123
 
 ## Set Up Email Verification
- Email verification is necessary for features like completing registration, changing email, etc...
+ Email verification is necessary for functions like completing registration, changing email, etc...
 
- To enable the email verification feature, you need to add a provider.json file, here is the example for Gmail:
+ To enable the email verification function, you need to add a provider.json file, here is the example for Gmail:
 
     {
         "Sender": "yourgmail@gmail.com",
@@ -69,7 +66,7 @@ If you are...
  
  ---
 
-|Features|Currently Available|Set up Required|
+|Functions|Currently Available|Set up Required|
 |:-|:-|:-|
 |Register|V|X (only store unauthorized user)|
 |Email Verification|V|V|
