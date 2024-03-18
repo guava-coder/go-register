@@ -37,11 +37,11 @@ If you are...
 
     cd build/go-register/
 
-    ./app.exe
+    ./app.exe 8080
 
  4. After running, open the app in the browser with the URL below:
 
-    http://localhost:8082/
+    http://localhost:8080/
 
 ## Login
  By default, there is an authorized user, using it to log in successfully:

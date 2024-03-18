@@ -3,11 +3,12 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	auth "goregister.com/app/auth"
-	. "goregister.com/app/controller"
-	. "goregister.com/app/db"
+	controller "goregister.com/app/controller"
+	db "goregister.com/app/db"
 	email "goregister.com/app/email"
 	jwt "goregister.com/app/jwt"
 	user "goregister.com/app/user"
@@ -21,9 +22,9 @@ var (
 )
 
 func initControllers(router *gin.Engine) {
-	NewUserController(user.NewUserService(userRepo, userAuth), router).Run()
-	NewJwtController(jwt.NewJwtService(userRepo, userAuth), router).Run()
-	NewEmailController(email.NewEmailService(userRepo, sender), router).Run()
+	controller.NewUserController(user.NewUserService(userRepo, userAuth), router).Run()
+	controller.NewJwtController(jwt.NewJwtService(userRepo, userAuth), router).Run()
+	controller.NewEmailController(email.NewEmailService(userRepo, sender), router).Run()
 }
 
 func (app GoRegister) Init() {
@@ -38,13 +39,23 @@ func (app GoRegister) Init() {
 	index(router)
 
 	addr := "localhost"
-	port := ":8082"
+
+	port := getPort()
 
 	err := router.Run(addr + port)
 	if err != nil {
 		log.Fatal("server start failed" + err.Error())
 	}
+}
 
+func getPort() string {
+	var port string
+	if len(os.Args) > 1 {
+		port = ":" + os.Args[1]
+	} else {
+		port = ":8080"
+	}
+	return port
 }
 
 var (
@@ -52,7 +63,7 @@ var (
 )
 
 func initRepos() {
-	db := DBInit()
+	db := db.DBInit()
 
 	if len(db) > 0 {
 		userRepo = user.NewUserRepository(db)
