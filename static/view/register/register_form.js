@@ -5,7 +5,7 @@ import GotoVerifyPage from '../verification/go_to_verify_page.js'
 (() => {
   const addUserAndSendVerificationCode = (body = '') => {
     UserController().addUser(body)
-      .catch(err => alert(err))
+      .catch(err => alert(err.Response))
       .then(data => {
         if (data !== undefined) {
           const submit = document.querySelector('#submit')
@@ -17,7 +17,7 @@ import GotoVerifyPage from '../verification/go_to_verify_page.js'
 
           EmailController().sendVerificationMail(userStr)
             .catch(err => {
-              alert(err)
+              alert(err.Response)
               submit.innerHTML = 'Register'
             })
             .then(res => { if (res !== undefined) GotoVerifyPage(userStr) })

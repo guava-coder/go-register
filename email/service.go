@@ -41,7 +41,6 @@ func getVerificationMailForm(receiver User) Email {
 
 const (
 	UpperCaseNums = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	EngCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZqwertyuiopasdfghjklzxcvbnm0123456789"
 )
 
 func RandStringBytes(length int, sample string) []byte {
