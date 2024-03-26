@@ -20,6 +20,10 @@ To make these functions easier to test and optimize, I decided to make a project
     , please make sure to change and hide the key to prevent security vulnerability.
     
  ---
+## Try this app
+
+You can download the current release and follow the description to try it.
+ 
 ## How to start
  
  1. First, clone this project:
