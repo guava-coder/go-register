@@ -20,48 +20,48 @@ func NewUserController(service UserService, router *gin.Engine) UserController {
 }
 
 func (ctr UserController) Run() {
-	ctr.AddUser()
-	ctr.QueryById()
-	ctr.UpdateUserAuth()
-	ctr.UpdatePassword()
-	ctr.UpdateUserInfo()
+	ctr.addUser()
+	ctr.queryById()
+	ctr.updateUserAuth()
+	ctr.updatePassword()
+	ctr.updateUserInfo()
 
-	ctr.CheckPassword()
+	ctr.checkPassword()
 }
 
-func (ctr UserController) AddUser() {
+func (ctr UserController) addUser() {
 	ctr.group.POST("add/", func(ctx *gin.Context) {
 		var handler email.EmailHandler
 		handler.VerifyUserEmail(ctx, ctr.service.AddUser)
 	})
 }
 
-func (ctr UserController) QueryById() {
+func (ctr UserController) queryById() {
 	ctr.group.POST("query/", func(ctx *gin.Context) {
 		verifier := jwt.NewBearerVerfier(ctr.service.UserAuth, ctx)
 		verifier.ExtractUserIdFromBearer(ctr.service.QueryById)
 	})
 }
 
-func (ctr UserController) UpdateUserAuth() {
+func (ctr UserController) updateUserAuth() {
 	ctr.group.PUT("auth/", ctr.service.UpdateUserAuth)
 }
 
-func (ctr UserController) UpdatePassword() {
+func (ctr UserController) updatePassword() {
 	ctr.group.PUT("password/", func(ctx *gin.Context) {
 		verifier := jwt.NewBearerVerfier(ctr.service.UserAuth, ctx)
 		verifier.ExtractUserIdFromBearer(ctr.service.UpdatePassword)
 	})
 }
 
-func (ctr UserController) UpdateUserInfo() {
+func (ctr UserController) updateUserInfo() {
 	ctr.group.PUT("update/", func(ctx *gin.Context) {
 		verifier := jwt.NewBearerVerfier(ctr.service.UserAuth, ctx)
 		verifier.ExtractUserIdFromBearer(ctr.service.UpdateUserInfo)
 	})
 }
 
-func (ctr UserController) CheckPassword() {
+func (ctr UserController) checkPassword() {
 	ctr.group.POST("check/password/", func(ctx *gin.Context) {
 		verifier := jwt.NewBearerVerfier(ctr.service.UserAuth, ctx)
 		verifier.ExtractUserIdFromBearer(ctr.service.CheckPassword)
