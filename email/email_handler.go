@@ -11,7 +11,7 @@ import (
 )
 
 func readAndHandleRequestBody(ctx *gin.Context, operation func(User)) {
-	ReadAndHandleRequestBody[User](ctx, operation)
+	ReadAndHandleRequestBody(ctx, operation)
 }
 
 type EmailHandler struct{}
