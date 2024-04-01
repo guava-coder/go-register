@@ -2,15 +2,15 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	. "goregister.com/app/email"
+	email "goregister.com/app/email"
 )
 
 type EmailController struct {
-	service EmailService
+	service email.EmailService
 	group   *gin.RouterGroup
 }
 
-func NewEmailController(service EmailService, router *gin.Engine) EmailController {
+func NewEmailController(service email.EmailService, router *gin.Engine) EmailController {
 	return EmailController{
 		service: service,
 		group:   router.Group("/api/v1/email"),

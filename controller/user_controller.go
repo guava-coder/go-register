@@ -4,15 +4,15 @@ import (
 	"github.com/gin-gonic/gin"
 	email "goregister.com/app/email"
 	jwt "goregister.com/app/jwt"
-	. "goregister.com/app/user"
+	user "goregister.com/app/user"
 )
 
 type UserController struct {
-	service UserService
+	service user.UserService
 	group   *gin.RouterGroup
 }
 
-func NewUserController(service UserService, router *gin.Engine) UserController {
+func NewUserController(service user.UserService, router *gin.Engine) UserController {
 	return UserController{
 		service: service,
 		group:   router.Group("api/v1/user/"),
