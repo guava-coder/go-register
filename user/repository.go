@@ -12,7 +12,7 @@ type UserError struct {
 
 func NewUserError() UserError {
 	return UserError{
-		NotFound: errors.New("User not found"),
+		NotFound: errors.New("user not found"),
 	}
 }
 
@@ -47,6 +47,14 @@ func (repo UserRepository) QueryByInfo(user User) (User, error) {
 	return User{}, NewUserError().NotFound
 }
 
+// IsTempCodeCorrect checks if the temporary code of a user is correct.
+//
+// It takes a User object as a parameter and returns a boolean value indicating
+// whether the temporary code is correct. The function queries the user's ID from
+// the UserRepository and checks if the temporary code matches the user's temporary
+// code in the database. If the temporary code is correct and its length is greater
+// than or equal to 6, the function updates the temporary code in the database to an
+// empty string and returns true. Otherwise, it returns false.
 func (repo UserRepository) IsTempCodeCorrect(user User) bool {
 	v, err := repo.QueryById(user.Id)
 	if err != nil {
