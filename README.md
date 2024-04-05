@@ -1,7 +1,7 @@
 # GO-Register
 
  ---
-Go-Register is a full-stack, single-page application that implements user registration and login functions.
+Go-Register is a full-stack web app that implements user registration and login functions.
 It has a clean, responsive UI, and great extensibility.
 
 Originally I was making users register and log in from scratch for a website.
