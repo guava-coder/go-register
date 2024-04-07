@@ -1,5 +1,4 @@
-import UserController from '../../js/controller/user_controller.js'
-import EmailController from '../../js/controller/email_controller.js'
+import * as js from '../../js/index.js'
 
 (() => {
   const userObj = JSON.parse(document.querySelector('#userdata').innerHTML)
@@ -9,7 +8,7 @@ import EmailController from '../../js/controller/email_controller.js'
 
     console.log(JSON.stringify(input))
 
-    UserController().updateUserAuth(JSON.stringify(input))
+    js.UserController.updateUserAuth(JSON.stringify(input))
       .catch(err => console.log(err))
       .then(data => {
         if (data !== undefined) {
@@ -25,7 +24,7 @@ import EmailController from '../../js/controller/email_controller.js'
 
   const resendMail = document.querySelector('#resend')
 
-  resendMail.onclick = () => EmailController().sendVerificationMail(JSON.stringify(userObj))
+  resendMail.onclick = () => js.EmailController.sendVerificationMail(JSON.stringify(userObj))
     .catch(err => console.log(err.Response))
     .then(res => alert(res.Response))
 })()

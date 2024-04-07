@@ -1,4 +1,4 @@
-import UserController from '../../js/controller/user_controller.js'
+import * as js from '../../js/index.js'
 
 (() => document.querySelector('#userform').addEventListener('submit', function (e) {
   e.preventDefault()
@@ -7,7 +7,7 @@ import UserController from '../../js/controller/user_controller.js'
   const userData = Object.fromEntries(formData)
   try {
     const dataStr = JSON.stringify(userData)
-    UserController().updateUserInfo(dataStr)
+    js.UserController.updateUserInfo(dataStr)
       .catch(err => alert(err.Response))
       .then(data => {
         if (data !== undefined) {

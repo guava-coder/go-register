@@ -1,4 +1,4 @@
-import UserController from '../../js/controller/user_controller.js'
+import * as js from '../../js/index.js'
 
 export default function CheckLogin () {
   const fetchHTMLPage = (url = '', handleData = () => {}) => {
@@ -13,7 +13,7 @@ export default function CheckLogin () {
       })
   }
 
-  UserController().findUserData()
+  js.UserController.findUserData()
     .catch(err => console.log(err))
     .then(user => {
       if (user === undefined) {

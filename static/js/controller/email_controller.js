@@ -2,31 +2,38 @@ import Ajaj from '../request/ajaj.js'
 import HttpStatusHandler from '../request/http_status_handler.js'
 
 /**
+ * Generates a handler function that alerts 'user not exist' on a Bad Request status.
  *
- *
- * @export
- * @return {{
- * verifyEmail:(bodyStr = '') => {}
- * sendVerificationMail: (bodyStr = '') => {}
- * }}
+ * @return {HttpStatusHandler} The status handler object.
  */
-export default function EmailController () {
-  const getHandler = () => {
-    const statusHandler = HttpStatusHandler()
-    statusHandler.BadRequest = () => alert('user not exist')
-    return statusHandler
-  }
-  const serv = EmailService()
-  return {
-    verifyEmail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/verify', bodyStr, statusHandler: getHandler() }) },
-    sendVerificationMail: (bodyStr = '') => { return serv.post({ url: '/api/v1/email/send/verification', bodyStr, statusHandler: getHandler() }) }
-  }
+function getHandler () {
+  const statusHandler = HttpStatusHandler()
+  statusHandler.BadRequest = () => alert('user not exist')
+  return statusHandler
 }
 
-function EmailService () {
-  const ajaj = Ajaj()
-  const h = new Headers({ 'Content-Type': 'application/json' })
-  return {
-    post: (args = {}) => { args.headers = h; return ajaj.post(args) }
-  }
+/**
+ * Sends a verification email with the provided body string.
+ *
+ * @param {string} bodyStr - The body content of the email.
+ * @return {Promise} A Promise that resolves when the email is successfully sent.
+ */
+export function sendVerificationMail (bodyStr = '') {
+  return post({ url: '/api/v1/email/send/verification', bodyStr, statusHandler: getHandler() })
+}
+
+/**
+ * Verify the email by sending a POST request to '/api/v1/email/verify'.
+ *
+ * @param {string} bodyStr - the string containing the email body
+ * @return {Promise}
+ */
+export function verifyEmail (bodyStr = '') {
+  return post({ url: '/api/v1/email/verify', bodyStr, statusHandler: getHandler() })
+}
+
+const ajaj = Ajaj()
+const h = new Headers({ 'Content-Type': 'application/json' })
+function post (args = {}) {
+  args.headers = h; return ajaj.post(args)
 }

@@ -1,4 +1,4 @@
-import UserController from '../../js/controller/user_controller.js'
+import * as js from '../../js/index.js'
 
 (() => {
   document.querySelector('#checkPassword').addEventListener('submit', (e) => {
@@ -15,14 +15,14 @@ import UserController from '../../js/controller/user_controller.js'
     if (flag) {
       const userData = Object.fromEntries(formData)
 
-      UserController().checkPassword(JSON.stringify(userData))
+      js.UserController.checkPassword(JSON.stringify(userData))
         .catch(err => alert(err.Response))
         .then(data => {
           if (data !== undefined) {
             const hxPage = '#setPassword'
             htmx.trigger(hxPage, 'loadPage')
             htmx.process(document.querySelector('#app'))
-          } 
+          }
         })
     }
   })

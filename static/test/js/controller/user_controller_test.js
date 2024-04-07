@@ -1,8 +1,8 @@
 import playjs from '../../../dependencies/playjs/playjs.js'
-import UserController from '../../../js/controller/user_controller.js'
+import * as UserController from '../../../js/controller/user_controller.js'
 
 ((u = playjs()) => {
-  UserController().findUserData()
+  UserController.findUserData()
     .catch(err => console.log(err))
     .then(data => {
       u.assertNotTrue(data === undefined)
@@ -11,7 +11,7 @@ import UserController from '../../../js/controller/user_controller.js'
 })(playjs('testFindUserData'));
 
 ((u = playjs()) => {
-  UserController().addUser(`
+  UserController.addUser(`
   {
     "Name": "eric",
     "Email": "###",
@@ -26,7 +26,7 @@ import UserController from '../../../js/controller/user_controller.js'
 })(playjs('testAddUser'));
 
 ((u = playjs()) => {
-  UserController().updateUserAuth(`{
+  UserController.updateUserAuth(`{
     "Id": "e2c18694-a181-42f8-8860-9209b9e5a40c",
     "Auth": "9S77BV"
   }`)
@@ -38,7 +38,7 @@ import UserController from '../../../js/controller/user_controller.js'
 })(playjs('testUpdateUserAuth'));
 
 ((u = playjs()) => {
-  UserController().updateUserInfo(`
+  UserController.updateUserInfo(`
       {
     "Name":"Markii",
     "Bio":"Hi! I'm Mark."
@@ -50,7 +50,7 @@ import UserController from '../../../js/controller/user_controller.js'
 })(playjs('testUpdateUserInfo'));
 
 ((u = playjs()) => {
-  UserController().checkPassword(`{
+  UserController.checkPassword(`{
       "Password": "000"
     }`)
     .catch(err => console.log(err))
@@ -61,7 +61,7 @@ import UserController from '../../../js/controller/user_controller.js'
 })(playjs('testCheckPassword'));
 
 ((u = playjs()) => {
-  UserController().updatePassword(`{
+  UserController.updatePassword(`{
   "Password": "123"
 }`).catch(err => console.log(err))
     .then(data => {

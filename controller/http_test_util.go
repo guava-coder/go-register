@@ -31,6 +31,10 @@ func getTestResponse(t *testing.T, req *http.Request) (res *http.Response) {
 
 func HandleTestRequest(req *http.Request, t *testing.T) {
 	res := getTestResponse(t, req)
+	HandleTestResponse(res, t)
+}
+
+func HandleTestResponse(res *http.Response, t *testing.T) {
 	defer res.Body.Close()
 	logResponseBody(res, t)
 	assertStatusOk(res, t)

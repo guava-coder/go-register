@@ -1,4 +1,4 @@
-import UserController from '../../js/controller/user_controller.js'
+import * as js from '../../js/index.js'
 
 (() => {
   document.querySelector('#passwordForm').addEventListener('submit', (e) => {
@@ -16,7 +16,7 @@ import UserController from '../../js/controller/user_controller.js'
 
       delete userData.ConfirmPw
 
-      UserController().updatePassword(JSON.stringify(userData))
+      js.UserController.updatePassword(JSON.stringify(userData))
         .catch(err => {
           alert(err.Response)
           document.querySelector('#confirmpw').value = ''

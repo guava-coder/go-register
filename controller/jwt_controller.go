@@ -2,15 +2,15 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	. "goregister.com/app/jwt"
+	jwt "goregister.com/app/jwt"
 )
 
 type JwtController struct {
-	service JwtService
+	service jwt.JwtService
 	group   *gin.RouterGroup
 }
 
-func NewJwtController(service JwtService, router *gin.Engine) JwtController {
+func NewJwtController(service jwt.JwtService, router *gin.Engine) JwtController {
 	return JwtController{
 		service: service,
 		group:   router.Group("api/v1/jwt/"),

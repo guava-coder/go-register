@@ -1,10 +1,9 @@
-import UserController from '../../js/controller/user_controller.js'
-import EmailController from '../../js/controller/email_controller.js'
+import * as js from '../../js/index.js'
 import GotoVerifyPage from '../verification/go_to_verify_page.js'
 
 (() => {
   const addUserAndSendVerificationCode = (body = '') => {
-    UserController().addUser(body)
+    js.UserController.addUser(body)
       .catch(err => alert(err.Response))
       .then(data => {
         if (data !== undefined) {
@@ -15,7 +14,7 @@ import GotoVerifyPage from '../verification/go_to_verify_page.js'
 
           const userStr = JSON.stringify(data.User)
 
-          EmailController().sendVerificationMail(userStr)
+          js.EmailController.sendVerificationMail(userStr)
             .catch(err => {
               alert(err.Response)
               submit.innerHTML = 'Register'

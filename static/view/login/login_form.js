@@ -1,6 +1,5 @@
-import JwtController from '../../js/controller/jwt_controller.js'
 import GotoVerifyPage from '../verification/go_to_verify_page.js'
-import EmailController from '../../js/controller/email_controller.js'
+import * as js from '../../js/index.js'
 
 (() => {
   document.querySelector('#loginForm').addEventListener('submit', function (e) {
@@ -15,14 +14,14 @@ import EmailController from '../../js/controller/email_controller.js'
         if (authUser) {
           const unauthUser = { Id: err.Id, Email: userData.Email }
           const uStr = JSON.stringify(unauthUser)
-          EmailController().sendVerificationMail(uStr)
+          js.EmailController.sendVerificationMail(uStr)
             .catch(err => console.log(err.Response))
             .then(res => { if (res !== undefined) GotoVerifyPage(uStr) })
         }
       }
     }
 
-    JwtController().login(JSON.stringify(userData))
+    js.JwtController.login(JSON.stringify(userData))
       .catch(err => {
         console.log(err)
         if (err.Id !== undefined) {

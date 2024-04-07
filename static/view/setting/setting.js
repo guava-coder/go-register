@@ -1,7 +1,7 @@
-import UserController from '../../js/controller/user_controller.js'
+import * as js from '../../js/index.js'
 
 (() => {
-  UserController().findUserData()
+  js.UserController.findUserData()
     .catch(err => console.log(err))
     .then(data => {
       const user = data.User
